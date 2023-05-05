@@ -4,9 +4,9 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Login from './pages/Login';
 import MainMenu from './pages/MainMenu';
-import Profile from './components/Profile';
-import DoneRecipes from './components/DoneRecipes';
-import FavoriteRecipes from './components/FavoriteRecipes';
+import Profile from './pages/Profile';
+import DoneRecipes from './pages/DoneRecipes';
+import FavoriteRecipes from './pages/FavoriteRecipes';
 
 function App() {
   return (
