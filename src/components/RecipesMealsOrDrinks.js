@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { RecipesContext } from '../context/RecipesProvider';
 
-function ListMealsOrDrinks() {
+function RecipesMealsOrDrinks() {
   const { listRecipes } = useContext(RecipesContext);
   const path = window.location.pathname;
   const typeRecipe = path === '/meals' ? 'Meal' : 'Drink';
@@ -31,4 +31,4 @@ function ListMealsOrDrinks() {
     </section>
   );
 }
-export default ListMealsOrDrinks;
+export default RecipesMealsOrDrinks;
