@@ -5,13 +5,16 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import LoginProvider from './context/LoginProvider';
+import RecipesProvider from './context/RecipesProvider';
 
 ReactDOM
   .createRoot(document.getElementById('root'))
   .render(
     <BrowserRouter>
       <LoginProvider>
-        <App />
+        <RecipesProvider>
+          <App />
+        </RecipesProvider>
       </LoginProvider>
     </BrowserRouter>,
   );
