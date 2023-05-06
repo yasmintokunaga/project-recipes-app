@@ -1,32 +1,36 @@
 import { useContext, useState } from 'react';
 import { RecipesContext } from '../context/RecipesProvider';
 import { fetchRecipesMeals, fetchRecipesDrinks } from '../services/fetchRecipes';
-import { fetchRecepiesByCategoryMeals, fetchRecepiesByCategoryDrinks } from '../services/fetchRecipiesByCategory';
+import {
+  fetchRecepiesByCategoryMeals,
+  fetchRecepiesByCategoryDrinks,
+} from '../services/fetchRecipiesByCategory';
 
 function ButtonsFilterCategories() {
   const [filterDisabled, setfilterDisabled] = useState(true);
   const { categoriesNames, setListRecipes, numberRecipes } = useContext(RecipesContext);
   const path = window.location.pathname;
 
+  async function handleRemoveFilter() {
+    const recipes = path === '/drinks'
+      ? await fetchRecipesDrinks() : await fetchRecipesMeals();
+    const configRecipes = recipes.filter((_recipe, index) => index < numberRecipes);
+    setListRecipes(configRecipes);
+    setfilterDisabled(true);
+  }
+
   async function handleFilterButton(category) {
-    if (filterDisabled){
+    if (filterDisabled) {
       const listFilterByCategory = path === '/meals'
         ? await fetchRecepiesByCategoryMeals(category)
         : await fetchRecepiesByCategoryDrinks(category);
-      const configList = listFilterByCategory.filter((_recipe, index) => index < numberRecipes);
+      const configList = listFilterByCategory
+        .filter((_recipe, index) => index < numberRecipes);
       setListRecipes(configList);
       setfilterDisabled(false);
     } else {
       await handleRemoveFilter();
     }
-  }
-
-  async function handleRemoveFilter() {
-    const recipes = path === '/drinks'
-    ? await fetchRecipesDrinks() : await fetchRecipesMeals();  
-    const configRecipes = recipes.filter((_recipe, index) => index < numberRecipes);
-    setListRecipes(configRecipes);
-    setfilterDisabled(true);
   }
 
   return (
