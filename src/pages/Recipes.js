@@ -1,5 +1,3 @@
-import { useContext, useState } from 'react';
-import { RecipesContext } from '../context/RecipesProvider';
 import RecipesMealsOrDrinks from '../components/RecipesMealsOrDrinks';
 import ButtonsFilterCategories from '../components/ButtonsFilterCategories';
 
