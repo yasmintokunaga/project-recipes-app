@@ -6,6 +6,7 @@ import Login from './pages/Login';
 import Recipes from './pages/Recipes';
 import RecipeDetails from './pages/RecipeDetails';
 import Profile from './pages/Profile';
+import DoneRecipes from './pages/DoneRecipes';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route exact path="/meals/:id-da-receita" component={ RecipeDetails } />
       <Route exact path="/drinks/:id-da-receita" component={ RecipeDetails } />
       <Route exact path="/profile" component={ Profile } />
+      <Route exact path="/done-recipes" component={ DoneRecipes } />
     </Switch>
   );
 }
