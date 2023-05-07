@@ -5,11 +5,12 @@ import profileIcon from '../images/profileIcon.svg';
 import doneIcon from '../images/doneIcon.svg';
 import logoutIcon from '../images/logoutIcon.svg';
 import yellowHearthIcon from '../images/yellowHearthIcon.svg';
+import Footer from '../components/Footer';
 
 export default function Profile() {
   const history = useHistory();
 
-  const getLS = localStorage.getItem('user');
+  const getLS = JSON.parse(localStorage.getItem('user'));
 
   const handleClick = () => {
     localStorage.clear();
@@ -20,7 +21,7 @@ export default function Profile() {
     <div>
       <img src={ profileIcon } alt="profile icon" />
       <h1>PROFILE</h1>
-      <p data-testid="profile-email">{getLS}</p>
+      <p data-testid="profile-email">{getLS.email}</p>
       <button
         type="button"
         data-testid="profile-done-btn"
@@ -47,6 +48,7 @@ export default function Profile() {
         <img src={ logoutIcon } alt="logout icon" />
         Logout
       </button>
+      <Footer />
     </div>
   );
 }
