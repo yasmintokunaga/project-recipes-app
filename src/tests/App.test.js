@@ -1,21 +1,23 @@
 import React from 'react';
+import createMemoryHistory from 'history';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BrowserRouter } from 'react-router-dom';
+import { Router } from 'react-router-dom';
 import App from '../App';
 import LoginProvider from '../context/LoginProvider';
 import RecipesProvider from '../context/RecipesProvider';
 
 describe('Verificando a funcionalidade da página Login', () => {
   test('Farewell, front-end', () => {
+    const history = createMemoryHistory();
     render(
-      <BrowserRouter>
+      <Router history={ history }>
         <LoginProvider>
           <RecipesProvider>
             <App />
           </RecipesProvider>
         </LoginProvider>
-      </BrowserRouter>,
+      </Router>,
     );
     // const emailElement = screen.getByTestId('email-input');
     // const passwordElement = screen.getByTestId('password-input');
