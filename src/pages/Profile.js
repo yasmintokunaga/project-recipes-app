@@ -5,7 +5,7 @@ import doneIcon from '../images/doneIcon.svg';
 import logoutIcon from '../images/logoutIcon.svg';
 import yellowHearthIcon from '../images/yellowHearthIcon.svg';
 import Footer from '../components/Footer';
-import Header from '../components/Header';
+import profileLogo from '../images/profileIcon.svg';
 
 export default function Profile() {
   const history = useHistory();
@@ -19,7 +19,9 @@ export default function Profile() {
 
   return (
     <div>
-      <Header title="Profile" searchBool={ false } />
+      {/* <Header title="Profile" searchBool={ false } /> */}
+      <img src={ profileLogo } alt="" data-testid="profile-top-btn" />
+      <h1 data-testid="page-title">Profile</h1>
       <p data-testid="profile-email">{getLS.email}</p>
       <button
         type="button"
