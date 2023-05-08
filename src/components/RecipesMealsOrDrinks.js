@@ -1,11 +1,12 @@
+import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { RecipesContext } from '../context/RecipesProvider';
 
-function RecipesMealsOrDrinks() {
+function RecipesMealsOrDrinks({ history }) {
+  const { pathname } = history.location;
   const { listRecipes } = useContext(RecipesContext);
-  const path = window.location.pathname;
-  const typeRecipe = path === '/meals' ? 'Meal' : 'Drink';
+  const typeRecipe = pathname === '/meals' ? 'Meal' : 'Drink';
 
   return (
     <section>
@@ -14,7 +15,7 @@ function RecipesMealsOrDrinks() {
           data-testid={ `${index}-recipe-card` }
           key={ recipe[`id${typeRecipe}`] }
         >
-          <Link to={ `${path}/${recipe[`id${typeRecipe}`]}` }>
+          <Link to={ `${pathname}/${recipe[`id${typeRecipe}`]}` }>
             <img
               data-testid={ `${index}-card-img` }
               src={ recipe[`str${typeRecipe}Thumb`] }
@@ -31,4 +32,12 @@ function RecipesMealsOrDrinks() {
     </section>
   );
 }
+
+RecipesMealsOrDrinks.propTypes = {
+  history: PropTypes.shape({
+    location: PropTypes.shape({
+      pathname: PropTypes.string.isRequired,
+    }).isRequired,
+  }).isRequired,
+};
 export default RecipesMealsOrDrinks;

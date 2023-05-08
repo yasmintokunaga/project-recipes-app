@@ -8,7 +8,7 @@ export const RecipesContext = createContext();
 function RecipesProvider({ children }) {
   const MAX_NUMBER_RECIPES = 12;
   const MAX_NUMBER_CATEGORIES = 5;
-  const [path] = useState(window.location.pathname);
+  const [path, setPath] = useState(window.location.pathname);
   const [listRecipes, setListRecipes] = useState([]);
   const [categoriesNames, setCategoriesNames] = useState([]);
   const [numberRecipes] = useState(MAX_NUMBER_RECIPES);
@@ -36,7 +36,9 @@ function RecipesProvider({ children }) {
     setListRecipes,
     categoriesNames,
     numberRecipes,
-  }), [listRecipes, categoriesNames, numberRecipes]);
+    path,
+    setPath,
+  }), [listRecipes, categoriesNames, numberRecipes, path]);
 
   return (
     <RecipesContext.Provider value={ values }>
