@@ -1,16 +1,17 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import profileIcon from '../images/profileIcon.svg';
 import doneIcon from '../images/doneIcon.svg';
 import logoutIcon from '../images/logoutIcon.svg';
 import yellowHearthIcon from '../images/yellowHearthIcon.svg';
 import Footer from '../components/Footer';
+import Header from '../components/Header';
 
 export default function Profile() {
   const history = useHistory();
 
-  const getLS = JSON.parse(localStorage.getItem('user'));
+  const getLS = localStorage
+    .getItem('user') ? JSON.parse(localStorage.getItem('user')) : '';
 
   const handleClick = () => {
     localStorage.clear();
@@ -19,8 +20,7 @@ export default function Profile() {
 
   return (
     <div>
-      <img src={ profileIcon } alt="profile icon" />
-      <h1>PROFILE</h1>
+      <Header title="Profile" searchBool={ false } />
       <p data-testid="profile-email">{getLS.email}</p>
       <button
         type="button"

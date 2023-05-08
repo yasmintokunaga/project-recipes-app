@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { RecipesContext } from '../context/RecipesProvider';
+import Header from './Header';
 
 function RecipesMealsOrDrinks() {
   const { listRecipes } = useContext(RecipesContext);
@@ -9,6 +10,7 @@ function RecipesMealsOrDrinks() {
 
   return (
     <section>
+      <Header title={ `${typeRecipe}s` } searchBool />
       { listRecipes && listRecipes.map((recipe, index) => (
         <div
           data-testid={ `${index}-recipe-card` }
