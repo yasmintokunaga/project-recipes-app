@@ -4,7 +4,8 @@ import { Switch, Route } from 'react-router-dom';
 
 import Login from './pages/Login';
 import Recipes from './pages/Recipes';
-import RecipeDetails from './pages/RecipeDetails';
+import DrinksDetails from './pages/DrinksDetails';
+import MealsDetails from './pages/MealsDetails';
 import Profile from './pages/Profile';
 
 function App() {
@@ -13,8 +14,8 @@ function App() {
       <Route exact path="/" component={ Login } />
       <Route exact path="/meals" component={ Recipes } />
       <Route exact path="/drinks" component={ Recipes } />
-      <Route exact path="/meals/:id-da-receita" component={ RecipeDetails } />
-      <Route exact path="/drinks/:id-da-receita" component={ RecipeDetails } />
+      <Route exact path="/meals/:id" component={ MealsDetails } />
+      <Route exact path="/drinks/:id" component={ DrinksDetails } />
       <Route exact path="/profile" component={ Profile } />
     </Switch>
   );
