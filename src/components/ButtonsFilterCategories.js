@@ -8,8 +8,8 @@ import {
 
 function ButtonsFilterCategories() {
   const [filterDisabled, setfilterDisabled] = useState(true);
-  const { categoriesNames, setListRecipes, numberRecipes } = useContext(RecipesContext);
-  const path = window.location.pathname;
+  const {
+    categoriesNames, setListRecipes, numberRecipes, path } = useContext(RecipesContext);
 
   async function handleRemoveFilter() {
     const recipes = path === '/drinks'
@@ -21,9 +21,9 @@ function ButtonsFilterCategories() {
 
   async function handleFilterButton(category) {
     if (filterDisabled) {
-      const listFilterByCategory = path === '/meals'
-        ? await fetchRecepiesByCategoryMeals(category)
-        : await fetchRecepiesByCategoryDrinks(category);
+      const listFilterByCategory = path === '/drinks'
+        ? await fetchRecepiesByCategoryDrinks(category)
+        : await fetchRecepiesByCategoryMeals(category);
       const configList = listFilterByCategory
         .filter((_recipe, index) => index < numberRecipes);
       setListRecipes(configList);
