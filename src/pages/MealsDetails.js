@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import listOfIngredients from '../services/listOfIngredients';
+import { fetchRecipesDrinks } from '../services/fetchRecipes';
 
 function MealsDetails() {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
+  const drinksRecommendation= fetchRecipesDrinks();
 
   useEffect(() => {
     async function fetchRecipeData() {
