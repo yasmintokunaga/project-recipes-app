@@ -1,7 +1,7 @@
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 import listOfIngredients from '../services/listOfIngredients';
 import { fetchRecipesDrinks } from '../services/fetchRecipes';
@@ -101,7 +101,9 @@ function MealsDetails() {
           </div>
         ))}
       </Slider>
-      <StartRecipeButton />
+      <Link to={ `/meals/${id}/in-progress` }>
+        <StartRecipeButton />
+      </Link>
     </div>
   );
 }
