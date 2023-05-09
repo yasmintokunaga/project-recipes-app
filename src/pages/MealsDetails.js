@@ -1,16 +1,38 @@
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import Slider from 'react-slick';
 import listOfIngredients from '../services/listOfIngredients';
+import { fetchRecipesDrinks } from '../services/fetchRecipes';
+import StartRecipeButton from '../components/buttons/startRecipeButton';
+import FavoriteButton from '../components/buttons/favoriteButton';
+import ShareButton from '../components/buttons/shareButton';
+
+const MAX_DRINKS = 6;
 
 function MealsDetails() {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
+  const [drinksRecommendation, setDrinksRecommendation] = useState([]);
+
+  const settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 2,
+  };
 
   useEffect(() => {
     async function fetchRecipeData() {
       const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`);
       const data = await response.json();
       setRecipe(data.meals[0]);
+      const drinks = await fetchRecipesDrinks();
+      if (Array.isArray(drinks)) {
+        setDrinksRecommendation(drinks.slice(0, MAX_DRINKS));
+      }
     }
 
     fetchRecipeData();
@@ -35,6 +57,8 @@ function MealsDetails() {
       <h1 data-testid="recipe-title">
         {strMeal}
       </h1>
+      <ShareButton />
+      <FavoriteButton />
       <img
         data-testid="recipe-photo"
         src={ strMealThumb }
@@ -62,6 +86,24 @@ function MealsDetails() {
         data-testid="video"
         src={ strYoutube }
       />
+      <Slider { ...settings }>
+        {drinksRecommendation.map((drink, index) => (
+          <div
+            data-testid={ `${index}-recommendation-card` }
+            key={ drink.idDrink }
+          >
+            <h2
+              data-testid={ `${index}-recommendation-title` }
+            >
+              {drink.strDrink}
+            </h2>
+            <img src={ drink.strDrinkThumb } alt={ drink.strDrink } />
+          </div>
+        ))}
+      </Slider>
+      <Link to={ `/meals/${id}/in-progress` }>
+        <StartRecipeButton />
+      </Link>
     </div>
   );
 }
