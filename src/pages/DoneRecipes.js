@@ -1,31 +1,51 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import copy from 'clipboard-copy';
 import shareBtn from '../images/shareIcon.svg';
 import Header from '../components/Header';
 
 export default function DoneRecipes() {
-  const xablau = [{
-    id: 'id-da-receita',
-    type: 'meal-ou-drink',
-    nationality: 'nacionalidade-da-receita-ou-texto-vazio',
-    category: 'categoria-da-receita-ou-texto-vazio',
-    alcoholicOrNot: 'alcoholic-ou-non-alcoholic-ou-texto-vazio',
-    name: 'nome-da-receita',
-    image: 'imagem-da-receita',
-    doneDate: 'quando-a-receita-foi-concluida',
-    tags: ['array-de-tags-da-receita-ou-array-vazio'],
-  }];
+  // const xablau = [{
+  //   id: 'id-da-receita',
+  //   type: 'meal-ou-drink',
+  //   nationality: 'nacionalidade-da-receita-ou-texto-vazio',
+  //   category: 'categoria-da-receita-ou-texto-vazio',
+  //   alcoholicOrNot: 'alcoholic-ou-non-alcoholic-ou-texto-vazio',
+  //   name: 'nome-da-receita',
+  //   image: 'imagem-da-receita',
+  //   doneDate: 'quando-a-receita-foi-concluida',
+  //   tags: ['array-de-tags-da-receita-ou-array-vazio'],
+  // }];
 
   const [copyLink, setCopyLink] = useState(false);
+  const [doneRecipes, setDoneRecipes] = useState([]);
 
-  const doneRecipes = localStorage.getItem('doneRecipes')
-    ? JSON.parse(localStorage.getItem('doneRecipes')) : xablau;
-
-  // const history = useHistory();
+  useEffect(() => {
+    if (localStorage.getItem('doneRecipes')) {
+      setDoneRecipes(JSON.parse(localStorage.getItem('doneRecipes')));
+    }
+  }, []);
 
   const handleClickShareBtn = (type, id) => {
     copy(`http://localhost:3000/${type}s/${id}`);
     setCopyLink(true);
+  };
+
+  const handleClickFilter = (type) => {
+    // if(type === 'drink') {
+    //   doneRecipes.filter((recipe) => recipe.type === type)
+    // }
+
+    switch (type) {
+    case 'drink':
+      doneRecipes.filter((recipe) => recipe.type === 'drink');
+      break;
+    case 'meal':
+      doneRecipes.filter((recipe) => recipe.type === 'meal');
+      break;
+    default:
+      setDoneRecipes(JSON.parse(localStorage.getItem('doneRecipes')));
+      break;
+    }
   };
 
   return (
@@ -35,18 +55,23 @@ export default function DoneRecipes() {
         <Header title="Done Recipes" searchBool={ false } />
         <button
           data-testid="filter-by-all-btn"
+          onClick={ () => handleClickFilter('') }
         >
           All
 
         </button>
         <button
           data-testid="filter-by-meal-btn"
+          onClick={ () => handleClickFilter('meal') }
+          value="meal"
         >
           Meals
 
         </button>
         <button
           data-testid="filter-by-drink-btn"
+          onClick={ () => handleClickFilter('drink') }
+          value="drink"
         >
           Drinks
 
