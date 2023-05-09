@@ -43,13 +43,19 @@ function MealsInProgress() {
         {strCategory}
       </p>
       <h3>Ingredientes</h3>
-      <ul>
-        {ingredients.map(({ ingredient, measure }, index) => (
-          <li key={ ingredient } data-testid={ `${index}-ingredient-name-and-measure` }>
+      {ingredients.map(({ ingredient, measure }, index) => (
+        <label
+          key={ index }
+          data-testid={ `${index}-ingredient-step` }
+        >
+          <input
+            type="checkbox"
+          />
+          <label htmlFor={ ingredient }>
             {` ${measure} - ${ingredient}`}
-          </li>
-        ))}
-      </ul>
+          </label>
+        </label>
+      ))}
       <h2>Instructions</h2>
       <p data-testid="instructions">
         {strInstructions}
