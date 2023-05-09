@@ -46,7 +46,16 @@ export default function DoneRecipes() {
             </p>
             <p data-testid={ `${index}-horizontal-name` }>{recipe.name}</p>
             <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
-            <button data-testid={ `${index}-horizontal-share-btn` }>{shareBtn}</button>
+            <button
+              data-testid={ `${index}-horizontal-share-btn` }
+              src={ shareBtn }
+            >
+              <img
+                src={ shareBtn }
+                alt="icon"
+              />
+
+            </button>
             <div>
               {recipe.tags.map((tagName) => (
                 <p
