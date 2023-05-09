@@ -1,22 +1,23 @@
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import profileLogo from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 
 function Header({ title, searchBool }) {
-  const history = useHistory();
+  // const history = useHistory();
 
   return (
     <header>
-      <button
-        onClick={ () => history.push('/profile') }
+      <Link
+        to="/profile"
         data-testid="profile-top-btn"
       >
         <img
           src={ profileLogo }
           alt="clique para ir ao perfil"
+          // data-testid="profile-top-btn"
         />
-      </button>
+      </Link>
       {searchBool && <img
         src={ searchIcon }
         alt="icone para realizar pesquisa"
