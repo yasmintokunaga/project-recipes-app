@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import listOfIngredients from '../services/listOfIngredients';
 import { fetchRecipesMeals } from '../services/fetchRecipes';
 import StartRecipeButton from '../components/buttons/startRecipeButton';
+import ShareButton from '../components/buttons/shareButton';
+import FavoriteButton from '../components/buttons/favoriteButton';
 
 function DrinksDetails() {
   const { id } = useParams();
@@ -39,6 +41,8 @@ function DrinksDetails() {
       <h1 data-testid="recipe-title">
         {strDrink}
       </h1>
+      <ShareButton />
+      <FavoriteButton />
       <img
         data-testid="recipe-photo"
         src={ strDrinkThumb }
