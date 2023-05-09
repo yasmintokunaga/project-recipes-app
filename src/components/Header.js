@@ -10,11 +10,11 @@ function Header({ title, searchBool }) {
     <header>
       <Link
         to="/profile"
-        data-testid="profile-top-btn"
       >
         <img
           src={ profileLogo }
           alt="clique para ir ao perfil"
+          data-testid="profile-top-btn"
           // data-testid="profile-top-btn"
         />
       </Link>
