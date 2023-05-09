@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import listOfIngredients from '../services/listOfIngredients';
 
 function MealsInProgress() {
@@ -8,10 +8,7 @@ function MealsInProgress() {
 
   const [isChecked, setIsChecked] = useState({});
 
-  useEffect(() => {
-    const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
-    setIsChecked(saveProgressLS[id] || []);
-  }, [id]);
+  const history = useHistory();
 
   useEffect(() => {
     async function fetchRecipeData() {
@@ -21,6 +18,11 @@ function MealsInProgress() {
     }
 
     fetchRecipeData();
+  }, [id]);
+
+  useEffect(() => {
+    const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
+    setIsChecked(saveProgressLS[id] || []);
   }, [id]);
 
   if (!recipe) {
@@ -105,13 +107,16 @@ function MealsInProgress() {
       <button
         type="button"
         data-testid="share-btn"
+        onClick={ handleShare }
       >
         Share
       </button>
+      <p>{ showAlert }</p>
 
       <button
         type="button"
         data-testid="finish-recipe-btn"
+        onClick={ () => history.push('/done-recipes') }
       >
         Finish Recipe
       </button>
