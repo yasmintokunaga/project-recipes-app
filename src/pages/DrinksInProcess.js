@@ -107,11 +107,9 @@ function MealsInProgress() {
       <button
         type="button"
         data-testid="share-btn"
-        onClick={ handleShare }
       >
         Share
       </button>
-      <p>{ showAlert }</p>
 
       <button
         type="button"
