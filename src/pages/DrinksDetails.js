@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import listOfIngredients from '../services/listOfIngredients';
 import { fetchRecipesMeals } from '../services/fetchRecipes';
+import StartRecipeButton from '../components/buttons/startRecipeButton';
 
 function DrinksDetails() {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
-  const mealsRecommendation= fetchRecipesMeals();
+  const mealsRecommendation = fetchRecipesMeals();
 
   useEffect(() => {
     async function fetchRecipeData() {
@@ -66,7 +67,7 @@ function DrinksDetails() {
         data-testid="video"
         src={ strYoutube }
       />
-
+      <StartRecipeButton />
     </div>
   );
 }
