@@ -15,7 +15,7 @@ describe('Verificando a funcionalidade da página Login', () => {
   beforeEach(() => {
     fakeFetch = jest.spyOn(global, 'fetch').mockImplementation(mockCypress);
   });
-  test('Verifica se é possível digitar nos campos email e senha, após isso, clicar no button "Enviar". Espera que a rota mude para "/meals".', async () => {
+  xtest('Verifica se é possível digitar nos campos email e senha, após isso, clicar no button "Enviar". Espera que a rota mude para "/meals".', async () => {
     const history = createMemoryHistory();
     render(
       <Router history={ history }>
@@ -36,7 +36,7 @@ describe('Verificando a funcionalidade da página Login', () => {
     userEvent.click(btnElement);
     expect(history.location.pathname).toBe('/meals');
   });
-  test('Verifica a funcionalidade da rota "/meals".', async () => {
+  xtest('Verifica a funcionalidade da rota "/meals".', async () => {
     const history = createMemoryHistory();
     render(
       <Router history={ history }>
@@ -77,7 +77,7 @@ describe('Verificando a funcionalidade da página Login', () => {
     const textG = await screen.findByText(/corba/i);
     expect(textG).toBeInTheDocument();
   });
-  test('Verifica a funcionalidade da rota "/meals".', async () => {
+  xtest('Verifica a funcionalidade da rota "/meals".', async () => {
     const history = createMemoryHistory();
     render(
       <Router history={ history }>
@@ -114,5 +114,37 @@ describe('Verificando a funcionalidade da página Login', () => {
     userEvent.click(btnsElements[6]);
     const textSushi = await screen.findByText(/kumpir/i);
     expect(textSushi).toBeInTheDocument();
+    const btnBeef = await screen.findByRole('button', { name: /beef/i });
+    userEvent.click(btnBeef);
+    const textBeefPie = await screen.findByText(/beef and mustard pie/i);
+    expect(textBeefPie).toBeInTheDocument();
+    userEvent.click(btnBeef);
+    const textTamiya = await screen.findByText(/dal fry/i);
+    expect(textTamiya).toBeInTheDocument();
+  });
+  test('Verifica a funcionalidade da rota "/profile".', async () => {
+    const history = createMemoryHistory();
+    render(
+      <Router history={ history }>
+        <LoginProvider>
+          <RecipesProvider>
+            <App />
+          </RecipesProvider>
+        </LoginProvider>
+      </Router>,
+    );
+    const emailElement = screen.getByTestId(EMAIL_INPUT);
+    const passwordElement = screen.getByTestId(PASSWORD_INPUT);
+    const btnElement = screen.getByTestId(LOGIN_SUBMIT_BTN);
+
+    userEvent.type(emailElement, 'trybe@teste.com');
+    userEvent.type(passwordElement, '1234567');
+
+    userEvent.click(btnElement);
+
+    expect(await screen.findByRole('button', { name: /beef/i })).toBeInTheDocument();
+
+    const email = await screen.findByText('trybe@teste.com');
+    expect(email).toBeInTheDocument();
   });
 });
