@@ -38,12 +38,14 @@ export default function DoneRecipes() {
               alt={ recipe.name }
               data-testid={ `${index}-horizontal-image` }
             />
+
             <p
               data-testid={ `${index}-horizontal-top-text` }
             >
-              {`${recipe.nationality} - ${recipe.category}`}
+              {`${recipe.nationality} - ${recipe.category} - ${recipe.alcoholicOrNot}`}
 
             </p>
+
             <p data-testid={ `${index}-horizontal-name` }>{recipe.name}</p>
             <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
             <button
