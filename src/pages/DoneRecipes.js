@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
+import copy from 'clipboard-copy';
 import shareBtn from '../images/shareIcon.svg';
 import Header from '../components/Header';
 
 export default function DoneRecipes() {
+  const xablau = [{
+    id: 'id-da-receita',
+    type: 'meal-ou-drink',
+    nationality: 'nacionalidade-da-receita-ou-texto-vazio',
+    category: 'categoria-da-receita-ou-texto-vazio',
+    alcoholicOrNot: 'alcoholic-ou-non-alcoholic-ou-texto-vazio',
+    name: 'nome-da-receita',
+    image: 'imagem-da-receita',
+    doneDate: 'quando-a-receita-foi-concluida',
+    tags: ['array-de-tags-da-receita-ou-array-vazio'],
+  }];
+
+  const [copyLink, setCopyLink] = useState(false);
+
   const doneRecipes = localStorage.getItem('doneRecipes')
-    ? JSON.parse(localStorage.getItem('doneRecipes')) : [];
+    ? JSON.parse(localStorage.getItem('doneRecipes')) : xablau;
+
+  // const history = useHistory();
+
+  const handleClickShareBtn = (type, id) => {
+    copy(`http://localhost:3000/${type}s/${id}`);
+    setCopyLink(true);
+  };
 
   return (
     <div>
@@ -51,6 +73,7 @@ export default function DoneRecipes() {
             <button
               data-testid={ `${index}-horizontal-share-btn` }
               src={ shareBtn }
+              onClick={ () => handleClickShareBtn(recipe.type, recipe.id) }
             >
               <img
                 src={ shareBtn }
@@ -58,6 +81,7 @@ export default function DoneRecipes() {
               />
 
             </button>
+            {copyLink && <small>Link copied!</small>}
             <div>
               {recipe.tags.map((tagName) => (
                 <p
