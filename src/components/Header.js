@@ -10,6 +10,7 @@ function Header({ title, searchBool }) {
       <button
         type="button"
         data-testid="profile-top-btn"
+        src={ profileLogo }
         onClick={ () => history.push('/profile') }
       >
         <img
