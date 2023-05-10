@@ -164,3 +164,4 @@ describe('Verificando a funcionalidade da página Login', () => {
     userEvent.click(btnLogout);
   });
 });
+// teste
