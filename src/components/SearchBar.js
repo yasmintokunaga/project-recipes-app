@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import searchIcon from '../images/searchIcon.svg';
 import { fetchRecipeByType } from '../services/fetchRecipiesByCategory';
 
@@ -8,21 +8,22 @@ function SearchBar() {
   const [radioV, setRadioV] = useState('');
   const [parameter, setParameter] = useState('');
   const [items, setItems] = useState([]);
+  const history = useHistory();
 
-  const { id } = useParams('');
+  const path = window.location.pathname;
 
   async function handleClickExec() {
     if (radioV === 'ing') {
-      await fetchRecipeByType('i', parameter, 'filter', id).then((item) => {
+      await fetchRecipeByType('i', parameter, 'filter', path.slice(1)).then((item) => {
         setItems(item);
       });
     } else if (radioV === 'name') {
-      await fetchRecipeByType('s', parameter, 'search', id).then((item) => {
+      await fetchRecipeByType('s', parameter, 'search', path.slice(1)).then((item) => {
         setItems(item);
       });
     } else if (radioV === 'fl') {
       if (parameter.length === 1) {
-        await fetchRecipeByType('f', parameter, 'search', id).then((item) => {
+        await fetchRecipeByType('f', parameter, 'search', path.slice(1)).then((item) => {
           setItems(item);
         });
       } else {
@@ -32,8 +33,13 @@ function SearchBar() {
   }
 
   useEffect(() => {
-    console.log(items);
-  }, [items]);
+    if (items.length === 1) {
+      const id = path === '/meals'
+        ? `${path}/${items[0].idMeal}` : `${path}/${items[0].idDrink}`;
+
+      history.push(`${id}`);
+    }
+  }, [items, history, path]);
 
   return (
     <div>

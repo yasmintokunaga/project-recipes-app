@@ -17,6 +17,6 @@ export async function fetchRecipeByType(type, par, pointer, consu) {
   const api = consu === 'drinks' ? `https://www.thecocktaildb.com/api/json/v1/1/${pointer}.php?${type}=${par}` : `https://www.themealdb.com/api/json/v1/1/${pointer}.php?${type}=${par}`;
   const response = await fetch(api);
   const data = await response.json();
-  // console.log(consu === 'drinks' ? data.drinks : data.meals);
+  console.log(consu);
   return consu === 'drinks' ? data.drinks : data.meals;
 }
