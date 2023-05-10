@@ -59,7 +59,7 @@ function DrinksDetails() {
         {strDrink}
       </h1>
       <ShareButton testId="share-btn" />
-      <FavoriteButton />
+      <FavoriteButton recipe={ recipe } type="drink" />
       <img
         data-testid="recipe-photo"
         src={ strDrinkThumb }

@@ -15,6 +15,7 @@ function ShareButton({ testId }) {
     <div>
       <button
         type="button"
+        src={ shareBtn }
         onClick={ handleClickShareBtn }
         data-testid={ testId }
       >
