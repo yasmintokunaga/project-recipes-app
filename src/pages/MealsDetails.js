@@ -57,7 +57,7 @@ function MealsDetails() {
       <h1 data-testid="recipe-title">
         {strMeal}
       </h1>
-      <ShareButton />
+      <ShareButton testId="share-btn" />
       <FavoriteButton />
       <img
         data-testid="recipe-photo"
