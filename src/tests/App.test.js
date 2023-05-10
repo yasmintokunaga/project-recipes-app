@@ -31,11 +31,10 @@ describe('Verificando a funcionalidade da página Login', () => {
     const passwordElement = screen.getByTestId(PASSWORD_INPUT);
     const btnElement = screen.getByTestId(LOGIN_SUBMIT_BTN);
 
-    userEvent.type(emailElement, 'email@email.com');
-    userEvent.type(passwordElement, '1234567');
-
-    userEvent.click(btnElement);
     await waitFor(() => {
+      userEvent.type(emailElement, 'email@email.com');
+      userEvent.type(passwordElement, '1234567');
+      userEvent.click(btnElement);
       expect(screen.getByRole('button', { name: /beef/i })).toBeInTheDocument();
       expect(history.location.pathname).toBe('/meals');
     });
@@ -55,33 +54,31 @@ describe('Verificando a funcionalidade da página Login', () => {
     const passwordElement = screen.getByTestId(PASSWORD_INPUT);
     const btnElement = screen.getByTestId(LOGIN_SUBMIT_BTN);
 
-    userEvent.type(emailElement, 'teste@teste.com');
-    userEvent.type(passwordElement, '1234567');
+    await waitFor(async () => {
+      userEvent.type(emailElement, 'teste@teste.com');
+      userEvent.type(passwordElement, '1234567');
 
-    userEvent.click(btnElement);
-    expect(history.location.pathname).toBe('/meals');
-
-    await waitFor(() => {
+      userEvent.click(btnElement);
+      expect(history.location.pathname).toBe('/meals');
       expect(screen.getByRole('button', { name: /beef/i })).toBeInTheDocument();
+      const btnsElements = screen.getAllByRole('button');
+      expect(btnsElements).toHaveLength(9);
+      userEvent.click(btnsElements[0]);
+      const textBeef = await screen.findByText(/beef and mustard pie/i);
+      expect(textBeef).toBeInTheDocument();
+
+      userEvent.click(btnsElements[5]);
+      const textCorba = await screen.findByText(/corba/i);
+      expect(textCorba).toBeInTheDocument();
+
+      userEvent.click(btnsElements[8]);
+      const textGg = await screen.findByText(/Gg/i);
+      expect(textGg).toBeInTheDocument();
+
+      userEvent.click(btnsElements[7]);
+      const textG = await screen.findByText(/corba/i);
+      expect(textG).toBeInTheDocument();
     });
-
-    const btnsElements = screen.getAllByRole('button');
-    expect(btnsElements).toHaveLength(9);
-    userEvent.click(btnsElements[0]);
-    const textBeef = await screen.findByText(/beef and mustard pie/i);
-    expect(textBeef).toBeInTheDocument();
-
-    userEvent.click(btnsElements[5]);
-    const textCorba = await screen.findByText(/corba/i);
-    expect(textCorba).toBeInTheDocument();
-
-    userEvent.click(btnsElements[8]);
-    const textGg = await screen.findByText(/Gg/i);
-    expect(textGg).toBeInTheDocument();
-
-    userEvent.click(btnsElements[7]);
-    const textG = await screen.findByText(/corba/i);
-    expect(textG).toBeInTheDocument();
   });
   test('Verifica a funcionalidade da rota "/meals".', async () => {
     const history = createMemoryHistory();
@@ -94,39 +91,41 @@ describe('Verificando a funcionalidade da página Login', () => {
         </LoginProvider>
       </Router>,
     );
-    const emailElement = screen.getByTestId(EMAIL_INPUT);
-    const passwordElement = screen.getByTestId(PASSWORD_INPUT);
-    const btnElement = screen.getByTestId(LOGIN_SUBMIT_BTN);
+    await waitFor(async () => {
+      const emailElement = screen.getByTestId(EMAIL_INPUT);
+      const passwordElement = screen.getByTestId(PASSWORD_INPUT);
+      const btnElement = screen.getByTestId(LOGIN_SUBMIT_BTN);
 
-    userEvent.type(emailElement, 'user@teste.com');
-    userEvent.type(passwordElement, '1234567');
+      userEvent.type(emailElement, 'user@teste.com');
+      userEvent.type(passwordElement, '1234567');
 
-    userEvent.click(btnElement);
+      userEvent.click(btnElement);
 
-    expect(await screen.findByRole('button', { name: /beef/i })).toBeInTheDocument();
+      expect(await screen.findByRole('button', { name: /beef/i })).toBeInTheDocument();
 
-    const btnsElements = screen.getAllByRole('button');
-    expect(btnsElements).toHaveLength(9);
+      const btnsElements = screen.getAllByRole('button');
+      expect(btnsElements).toHaveLength(9);
 
-    userEvent.click(btnsElements[8]);
-    const btnOrdinaryDrink = await screen.findByRole('button', { name: /ordinary drink/i });
-    expect(btnOrdinaryDrink).toBeInTheDocument();
+      userEvent.click(btnsElements[8]);
+      const btnOrdinaryDrink = await screen.findByRole('button', { name: /ordinary drink/i });
+      expect(btnOrdinaryDrink).toBeInTheDocument();
 
-    userEvent.click(btnOrdinaryDrink);
+      userEvent.click(btnOrdinaryDrink);
 
-    const textGone = await screen.findByText(/410 gone/i);
-    expect(textGone).toBeInTheDocument();
-    userEvent.click(btnsElements[5]);
-    userEvent.click(btnsElements[7]);
-    const textSushi = await screen.findByText(/kumpir/i);
-    expect(textSushi).toBeInTheDocument();
-    const btnBeef = await screen.findByRole('button', { name: /beef/i });
-    userEvent.click(btnBeef);
-    const textBeefPie = await screen.findByText(/beef and mustard pie/i);
-    expect(textBeefPie).toBeInTheDocument();
-    userEvent.click(btnBeef);
-    const textTamiya = await screen.findByText(/dal fry/i);
-    expect(textTamiya).toBeInTheDocument();
+      const textGone = await screen.findByText(/410 gone/i);
+      expect(textGone).toBeInTheDocument();
+      userEvent.click(btnsElements[5]);
+      userEvent.click(btnsElements[7]);
+      const textSushi = await screen.findByText(/kumpir/i);
+      expect(textSushi).toBeInTheDocument();
+      const btnBeef = await screen.findByRole('button', { name: /beef/i });
+      userEvent.click(btnBeef);
+      const textBeefPie = await screen.findByText(/beef and mustard pie/i);
+      expect(textBeefPie).toBeInTheDocument();
+      userEvent.click(btnBeef);
+      const textTamiya = await screen.findByText(/dal fry/i);
+      expect(textTamiya).toBeInTheDocument();
+    });
   });
   test('Verifica a funcionalidade da rota "/profile".', async () => {
     const history = createMemoryHistory();
@@ -139,29 +138,30 @@ describe('Verificando a funcionalidade da página Login', () => {
         </LoginProvider>
       </Router>,
     );
-    const emailElement = screen.getByTestId(EMAIL_INPUT);
-    const passwordElement = screen.getByTestId(PASSWORD_INPUT);
-    const btnElement = screen.getByTestId(LOGIN_SUBMIT_BTN);
+    await waitFor(async () => {
+      const emailElement = screen.getByTestId(EMAIL_INPUT);
+      const passwordElement = screen.getByTestId(PASSWORD_INPUT);
+      const btnElement = screen.getByTestId(LOGIN_SUBMIT_BTN);
 
-    userEvent.type(emailElement, 'trybe@teste.com');
-    userEvent.type(passwordElement, '1234567');
+      userEvent.type(emailElement, 'trybe@teste.com');
+      userEvent.type(passwordElement, '1234567');
 
-    userEvent.click(btnElement);
+      userEvent.click(btnElement);
 
-    expect(await screen.findByRole('button', { name: /beef/i })).toBeInTheDocument();
+      expect(await screen.findByRole('button', { name: /beef/i })).toBeInTheDocument();
 
-    const btnProfile = screen.getByTestId(PROFILE_TOP_BTN);
-    userEvent.click(btnProfile);
-    const btnDoneRecipes = screen.getByTestId('profile-done-btn');
-    userEvent.click(btnDoneRecipes);
-    const btn = screen.getByTestId(PROFILE_TOP_BTN);
-    userEvent.click(btn);
-    const btnFavoriteRecipes = screen.getByTestId('profile-favorite-btn');
-    userEvent.click(btnFavoriteRecipes);
-    const btn1 = screen.getByTestId(PROFILE_TOP_BTN);
-    userEvent.click(btn1);
-    const btnLogout = screen.getByTestId('profile-logout-btn');
-    userEvent.click(btnLogout);
+      const btnProfile = screen.getByTestId(PROFILE_TOP_BTN);
+      userEvent.click(btnProfile);
+      const btnDoneRecipes = await screen.findByTestId('profile-done-btn');
+      userEvent.click(btnDoneRecipes);
+      const btn = screen.getByTestId(PROFILE_TOP_BTN);
+      userEvent.click(btn);
+      const btnFavoriteRecipes = screen.getByTestId('profile-favorite-btn');
+      userEvent.click(btnFavoriteRecipes);
+      const btn1 = screen.getByTestId(PROFILE_TOP_BTN);
+      userEvent.click(btn1);
+      const btnLogout = screen.getByTestId('profile-logout-btn');
+      userEvent.click(btnLogout);
+    });
   });
 });
-// teste
