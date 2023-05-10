@@ -2,27 +2,41 @@ import React, { useEffect, useState } from 'react';
 import copy from 'clipboard-copy';
 import shareBtn from '../images/shareIcon.svg';
 import Header from '../components/Header';
+import ShareButton from '../components/buttons/shareButton';
 
 export default function DoneRecipes() {
   // const xablau = [{
-  //   id: 'id-da-receita',
-  //   type: 'meal-ou-drink',
+  //   id: '01',
+  //   type: 'meal',
   //   nationality: 'nacionalidade-da-receita-ou-texto-vazio',
   //   category: 'categoria-da-receita-ou-texto-vazio',
   //   alcoholicOrNot: 'alcoholic-ou-non-alcoholic-ou-texto-vazio',
-  //   name: 'nome-da-receita',
+  //   name: 'larissão',
+  //   image: 'imagem-da-receita',
+  //   doneDate: 'quando-a-receita-foi-concluida',
+  //   tags: ['array-de-tags-da-receita-ou-array-vazio'],
+  // }, {
+  //   id: '02',
+  //   type: 'drink',
+  //   nationality: 'nacionalidade-da-receita-ou-texto-vazio',
+  //   category: 'categoria-da-receita-ou-texto-vazio',
+  //   alcoholicOrNot: 'alcoholic-ou-non-alcoholic-ou-texto-vazio',
+  //   name: 'lalalarys',
   //   image: 'imagem-da-receita',
   //   doneDate: 'quando-a-receita-foi-concluida',
   //   tags: ['array-de-tags-da-receita-ou-array-vazio'],
   // }];
 
-  const [copyLink, setCopyLink] = useState(false);
+  // const [copyLink, setCopyLink] = useState(false);
   const [doneRecipes, setDoneRecipes] = useState([]);
+  const [copyLink, setCopyLink] = useState(false);
+  const [filtredDoneRecipes, setFiltredDoneRecipes] = useState([]);
 
   useEffect(() => {
     if (localStorage.getItem('doneRecipes')) {
       setDoneRecipes(JSON.parse(localStorage.getItem('doneRecipes')));
     }
+    // setDoneRecipes(xablau);
   }, []);
 
   const handleClickShareBtn = (type, id) => {
@@ -31,19 +45,22 @@ export default function DoneRecipes() {
   };
 
   const handleClickFilter = (type) => {
-    // if(type === 'drink') {
-    //   doneRecipes.filter((recipe) => recipe.type === type)
-    // }
-
+    let filtredRecipe = [];
     switch (type) {
     case 'drink':
-      doneRecipes.filter((recipe) => recipe.type === 'drink');
+      filtredRecipe = doneRecipes.filter((recipe) => recipe.type === 'drink');
+      setFiltredDoneRecipes(filtredRecipe);
+      console.log('drink');
       break;
     case 'meal':
-      doneRecipes.filter((recipe) => recipe.type === 'meal');
+      filtredRecipe = doneRecipes.filter((recipe) => recipe.type === 'meal');
+      setFiltredDoneRecipes(filtredRecipe);
+      console.log('meal');
       break;
     default:
-      setDoneRecipes(JSON.parse(localStorage.getItem('doneRecipes')));
+      setFiltredDoneRecipes([]);
+      // setDoneRecipes(JSON.parse(localStorage.getItem('doneRecipes')));
+      console.log('all');
       break;
     }
   };
@@ -55,7 +72,7 @@ export default function DoneRecipes() {
         <Header title="Done Recipes" searchBool={ false } />
         <button
           data-testid="filter-by-all-btn"
-          onClick={ () => handleClickFilter('') }
+          onClick={ () => handleClickFilter('doneRecipes') }
         >
           All
 
@@ -78,48 +95,45 @@ export default function DoneRecipes() {
         </button>
       </section>
       <section>
-        {doneRecipes.map((recipe, index) => (
-          <div key={ recipe.id }>
-            <img
-              src={ recipe.image }
-              alt={ recipe.name }
-              data-testid={ `${index}-horizontal-image` }
-            />
+        {(filtredDoneRecipes.length ? filtredDoneRecipes : doneRecipes)
+          .map((recipe, index) => (
+            <div key={ recipe.id }>
+              <a href={ `http://localhost:3000/${recipe.type}s/${recipe.id}` }>
+                <img
+                  className="recipe-img"
+                  src={ recipe.image }
+                  alt={ recipe.name }
+                  data-testid={ `${index}-horizontal-image` }
+                />
+              </a>
+              <a href={ `http://localhost:3000/${recipe.type}s/${recipe.id}` }>
+                <p data-testid={ `${index}-horizontal-name` }>{recipe.name}</p>
+              </a>
+              <p
+                data-testid={ `${index}-horizontal-top-text` }
+              >
+                {`${recipe.nationality} - ${recipe.category} - ${recipe.alcoholicOrNot}`}
+              </p>
 
-            <p
-              data-testid={ `${index}-horizontal-top-text` }
-            >
-              {`${recipe.nationality} - ${recipe.category} - ${recipe.alcoholicOrNot}`}
-
-            </p>
-
-            <p data-testid={ `${index}-horizontal-name` }>{recipe.name}</p>
-            <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
-            <button
-              data-testid={ `${index}-horizontal-share-btn` }
-              src={ shareBtn }
-              onClick={ () => handleClickShareBtn(recipe.type, recipe.id) }
-            >
-              <img
+              <p data-testid={ `${index}-horizontal-done-date` }>{recipe.doneDate}</p>
+              <ShareButton
                 src={ shareBtn }
-                alt="icon"
+                testId={ `${index}-horizontal-share-btn` }
+                handleClickShareBtn={ () => handleClickShareBtn(recipe.type, recipe.id) }
               />
-
-            </button>
-            {copyLink && <small>Link copied!</small>}
-            <div>
-              {recipe.tags.map((tagName) => (
-                <p
-                  key={ tagName }
-                  data-testid={ `${index}-${tagName}-horizontal-tag` }
-                >
-                  {tagName}
-
-                </p>
-              ))}
+              {copyLink && <small>Link copied!</small>}
+              <div>
+                {recipe.tags.map((tagName) => (
+                  <p
+                    key={ tagName }
+                    data-testid={ `${index}-${tagName}-horizontal-tag` }
+                  >
+                    {tagName}
+                  </p>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </section>
 
     </div>

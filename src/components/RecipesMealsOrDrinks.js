@@ -15,7 +15,7 @@ function RecipesMealsOrDrinks({ history }) {
       { listRecipes && listRecipes.map((recipe, index) => (
         <div
           data-testid={ `${index}-recipe-card` }
-          key={ recipe[`id${typeRecipe}`] }
+          key={ index }
         >
           <Link to={ `${pathname}/${recipe[`id${typeRecipe}`]}` }>
             <img

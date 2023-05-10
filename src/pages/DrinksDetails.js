@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import Slider from 'react-slick';
+import copy from 'clipboard-copy';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import listOfIngredients from '../services/listOfIngredients';
@@ -15,6 +16,7 @@ function DrinksDetails() {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
   const [mealsRecommendation, setMealsRecommendation] = useState([]);
+  const [copyLink, setCopyLink] = useState(false);
 
   const settings = {
     dots: true,
@@ -22,6 +24,11 @@ function DrinksDetails() {
     speed: 500,
     slidesToShow: 2,
     slidesToScroll: 2,
+  };
+
+  const handleClickShareBtn = () => {
+    copy(window.location.href);
+    setCopyLink(true);
   };
 
   useEffect(() => {
@@ -58,8 +65,12 @@ function DrinksDetails() {
       <h1 data-testid="recipe-title">
         {strDrink}
       </h1>
-      <ShareButton testId="share-btn" />
-      <FavoriteButton recipe={ recipe } type="drink" />
+      <ShareButton
+        testId="share-btn"
+        handleClickShareBtn={ () => handleClickShareBtn() }
+      />
+      {copyLink && <small>Link copied!</small>}
+      <FavoriteButton />
       <img
         data-testid="recipe-photo"
         src={ strDrinkThumb }

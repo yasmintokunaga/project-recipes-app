@@ -2,6 +2,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import copy from 'clipboard-copy';
 import Slider from 'react-slick';
 import listOfIngredients from '../services/listOfIngredients';
 import { fetchRecipesDrinks } from '../services/fetchRecipes';
@@ -15,6 +16,7 @@ function MealsDetails() {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
   const [drinksRecommendation, setDrinksRecommendation] = useState([]);
+  const [copyLink, setCopyLink] = useState(false);
 
   const settings = {
     dots: true,
@@ -22,6 +24,11 @@ function MealsDetails() {
     speed: 500,
     slidesToShow: 2,
     slidesToScroll: 2,
+  };
+
+  const handleClickShareBtn = () => {
+    copy(window.location.href);
+    setCopyLink(true);
   };
 
   useEffect(() => {
@@ -57,8 +64,12 @@ function MealsDetails() {
       <h1 data-testid="recipe-title">
         {strMeal}
       </h1>
-      <ShareButton testId="share-btn" />
-      <FavoriteButton recipe={ recipe } type="meal" />
+      <ShareButton
+        testId="share-btn"
+        handleClickShareBtn={ () => handleClickShareBtn() }
+      />
+      {copyLink && <small>Link copied!</small>}
+      <FavoriteButton />
       <img
         data-testid="recipe-photo"
         src={ strMealThumb }
