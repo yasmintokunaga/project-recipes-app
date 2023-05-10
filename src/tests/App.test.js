@@ -1,6 +1,6 @@
 import React from 'react';
 import { createMemoryHistory } from 'history';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Router } from 'react-router-dom';
 import App from '../App';
@@ -35,7 +35,10 @@ describe('Verificando a funcionalidade da página Login', () => {
     userEvent.type(passwordElement, '1234567');
 
     userEvent.click(btnElement);
-    expect(history.location.pathname).toBe('/meals');
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /beef/i })).toBeInTheDocument();
+      expect(history.location.pathname).toBe('/meals');
+    });
   });
   test('Verifica a funcionalidade da rota "/meals".', async () => {
     const history = createMemoryHistory();
@@ -58,7 +61,9 @@ describe('Verificando a funcionalidade da página Login', () => {
     userEvent.click(btnElement);
     expect(history.location.pathname).toBe('/meals');
 
-    expect(await screen.findByRole('button', { name: /beef/i })).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: /beef/i })).toBeInTheDocument();
+    });
 
     const btnsElements = screen.getAllByRole('button');
     expect(btnsElements).toHaveLength(9);
