@@ -3,6 +3,7 @@ import copy from 'clipboard-copy';
 import shareBtn from '../images/shareIcon.svg';
 import Header from '../components/Header';
 import ShareButton from '../components/buttons/shareButton';
+import FavoriteButton from '../components/buttons/favoriteButton';
 
 export default function FavoriteRecipes() {
   // const xablau = [
@@ -25,7 +26,6 @@ export default function FavoriteRecipes() {
   //     image: 'https://www.thecocktaildb.com/images/media/drink/zvsre31572902738.jpg',
   //   },
   // ];
-  // localStorage.setItem('favoriteRecipes', JSON.stringify(xablau));
 
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
 
@@ -34,9 +34,7 @@ export default function FavoriteRecipes() {
 
   useEffect(() => {
     if (localStorage.getItem('favoriteRecipes')) {
-      const teste = JSON.parse(localStorage.getItem('favoriteRecipes'));
-      setFavoriteRecipes(teste);
-      console.log(teste);
+      setFavoriteRecipes(JSON.parse(localStorage.getItem('favoriteRecipes')));
     }
     // setFavoriteRecipes(xablau);
   }, []);
@@ -118,6 +116,10 @@ export default function FavoriteRecipes() {
                 src={ shareBtn }
                 testId={ `${index}-horizontal-share-btn` }
                 handleClickShareBtn={ () => handleClickShareBtn(recipe.type, recipe.id) }
+              />
+              <FavoriteButton
+                recipe={ recipe }
+                testId={ `${index}-horizontal-favorite-btn` }
               />
               {copyLink && <small>Link copied!</small>}
               {/* <div>

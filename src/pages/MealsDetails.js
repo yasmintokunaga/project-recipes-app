@@ -69,7 +69,7 @@ function MealsDetails() {
         handleClickShareBtn={ () => handleClickShareBtn() }
       />
       {copyLink && <small>Link copied!</small>}
-      <FavoriteButton />
+      <FavoriteButton testId="favorite-btn" />
       <img
         data-testid="recipe-photo"
         src={ strMealThumb }
