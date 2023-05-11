@@ -12,7 +12,6 @@ import mockCypress from '../../cypress/mocks/fetch';
 const EMAIL_INPUT = 'email-input';
 const PASSWORD_INPUT = 'password-input';
 const LOGIN_SUBMIT_BTN = 'login-submit-btn';
-// const PROFILE_TOP_BTN = 'profile-top-btn';
 jest.mock('clipboard-copy');
 describe('Verificando a funcionalidade da página Profile', () => {
   beforeEach(() => {
