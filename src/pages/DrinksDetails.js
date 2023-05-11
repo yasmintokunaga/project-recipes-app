@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 import copy from 'clipboard-copy';
 import 'slick-carousel/slick/slick.css';
@@ -114,9 +114,7 @@ function DrinksDetails() {
           </div>
         ))}
       </Slider>
-      <Link to={ `/drinks/${id}/in-progress` }>
-        <StartRecipeButton />
-      </Link>
+      <StartRecipeButton />
     </div>
   );
 }
