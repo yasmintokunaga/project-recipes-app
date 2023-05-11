@@ -11,7 +11,7 @@ import mockCypress from '../../cypress/mocks/fetch';
 const EMAIL_INPUT = 'email-input';
 const PASSWORD_INPUT = 'password-input';
 const LOGIN_SUBMIT_BTN = 'login-submit-btn';
-xdescribe('Verificando a funcionalidade da página Drinks', () => {
+describe('Verificando a funcionalidade da página Drinks', () => {
   beforeEach(() => {
     fakeFetch = jest.spyOn(global, 'fetch').mockImplementation(mockCypress);
   });

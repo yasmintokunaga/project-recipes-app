@@ -12,7 +12,7 @@ const EMAIL_INPUT = 'email-input';
 const PASSWORD_INPUT = 'password-input';
 const LOGIN_SUBMIT_BTN = 'login-submit-btn';
 const PROFILE_TOP_BTN = 'profile-top-btn';
-xdescribe('Verificando a funcionalidade da página Profile', () => {
+describe('Verificando a funcionalidade da página Profile', () => {
   beforeEach(() => {
     fakeFetch = jest.spyOn(global, 'fetch').mockImplementation(mockCypress);
   });
