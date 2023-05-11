@@ -9,8 +9,9 @@ function MealsInProgress() {
   const history = useHistory();
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
-  const [isChecked, setIsChecked] = useState({});
+  const [isChecked, setIsChecked] = useState([]);
   const [copyLink, setCopyLink] = useState(false);
+  const [finish, setFinish] = useState(false);
 
   const location = window.location.href;
   const share = location.replace(/(\/(?:meals|drinks)\/\d+)\/.*/, '$1');
@@ -119,6 +120,7 @@ function MealsInProgress() {
       <button
         type="button"
         data-testid="finish-recipe-btn"
+        disabled={ finish }
         onClick={ () => history.push('/done-recipes') }
       >
         Finish Recipe
