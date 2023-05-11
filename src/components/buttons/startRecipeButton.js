@@ -1,3 +1,4 @@
+import { object } from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -11,9 +12,8 @@ function StartRecipeButton() {
   useEffect(() => {
     if (localStorage.getItem('inProgressRecipes')) {
       const inProgressRecipe = JSON.parse(localStorage.getItem('inProgressRecipes'));
-      console.log(Object.keys(inProgressRecipe[idPath]));
-      const isInProgress = Object.keys(inProgressRecipe[idPath])
-        .some((id) => id === idPath);
+      const isInProgress = inProgressRecipe[typePath] ?
+        Object.keys(inProgressRecipe[typePath]).some((id) => id === idPath) : false
       setInProgress(isInProgress);
     }
   }, [idPath]);
