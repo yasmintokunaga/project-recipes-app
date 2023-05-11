@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import { useHistory } from 'react-router-dom';
 import profileLogo from '../images/profileIcon.svg';
 import SearchBar from './SearchBar';
@@ -8,8 +7,6 @@ function Header({ title, searchBool }) {
   const history = useHistory();
   return (
     <header>
-      <Link
-        to="/profile"
       <button
         type="button"
         data-testid="profile-top-btn"
@@ -21,12 +18,10 @@ function Header({ title, searchBool }) {
           alt="clique para ir ao perfil"
           data-testid="profile-top-btn"
         />
-      </Link>
+      </button>
       {searchBool && (
         <SearchBar />
       )}
-        />
-      </button>
       {searchBool && <img
         src={ searchIcon }
         alt="icone para realizar pesquisa"
