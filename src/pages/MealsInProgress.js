@@ -22,8 +22,11 @@ function MealsInProgress() {
   };
 
   useEffect(() => {
-    const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
-    setIsChecked(saveProgressLS[id] || []);
+    const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {
+      drinks: {},
+      meals: {},
+    };
+    setIsChecked(saveProgressLS.meals[id] || []);
   }, [id]);
 
   useEffect(() => {
@@ -42,17 +45,24 @@ function MealsInProgress() {
 
   const onChange = ({ target }) => {
     const { checked } = target;
-    const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
-    saveProgressLS[id] = saveProgressLS[id]
-      ? [...saveProgressLS[id], target.name]
-      : [target.name];
+    const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {
+      drinks: {},
+      meals: {},
+    };
 
-    if (!checked) {
-      saveProgressLS[id] = saveProgressLS[id].filter((el) => el !== target.name);
+    if (!saveProgressLS.meals[id]) {
+      saveProgressLS.meals[id] = [];
+    }
+
+    if (checked) {
+      saveProgressLS.meals[id].push(target.name);
+    } else {
+      saveProgressLS.meals[id] = saveProgressLS.meals[id]
+        .filter((item) => item !== target.name);
     }
 
     localStorage.setItem('inProgressRecipes', JSON.stringify(saveProgressLS));
-    setIsChecked(saveProgressLS[id]);
+    setIsChecked(saveProgressLS.meals[id]);
   };
 
   const {
