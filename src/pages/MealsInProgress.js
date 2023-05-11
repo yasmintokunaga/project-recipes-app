@@ -1,14 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
+import copy from 'clipboard-copy';
 import listOfIngredients from '../services/listOfIngredients';
 
+import ShareButton from '../components/buttons/shareButton';
+
 function MealsInProgress() {
+  const history = useHistory();
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
-
   const [isChecked, setIsChecked] = useState({});
+  const [copyLink, setCopyLink] = useState(false);
 
-  const history = useHistory();
+  const location = window.location.href;
+  const share = location.replace(/(\/(?:meals|drinks)\/\d+)\/.*/, '$1');
+
+  const handleClickShareBtn = () => {
+    copy(share);
+    setCopyLink(true);
+  };
 
   useEffect(() => {
     const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
@@ -100,13 +110,11 @@ function MealsInProgress() {
       >
         Favorite
       </button>
-
-      <button
-        type="button"
-        data-testid="share-btn"
-      >
-        Share
-      </button>
+      <ShareButton
+        testId="share-btn"
+        handleClickShareBtn={ () => handleClickShareBtn() }
+      />
+      { copyLink && <p>Link copied!</p>}
 
       <button
         type="button"
