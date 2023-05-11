@@ -112,7 +112,7 @@ function MealsDetails() {
           </div>
         ))}
       </Slider>
-      <StartRecipeButton />
+      {/* <StartRecipeButton /> */}
     </div>
   );
 }

@@ -22,22 +22,32 @@ function FavoriteButton({ recipe }) {
     const isAlreadyFavorite = favoriteRecipes
       .some((favRecipe) => favRecipe.id === idPath);
 
-    const recipeData = {
+    const recipeDataDrink = {
+      id: idPath,
+      type: typePath,
+      nationality: '',
+      category: recipe.strCategory,
+      alcoholicOrNot: recipe.strAlcoholic ? recipe.strAlcoholic : '',
+      name: recipe.strDrink,
+      image: recipe.strDrinkThumb,
+    };
+    const recipeDataMeal = {
       id: idPath,
       type: typePath,
       nationality: recipe.strArea,
       category: recipe.strCategory,
-      alcoholicOrNot: recipe.strAlcoholic,
+      alcoholicOrNot: recipe.strAlcoholic ? recipe.strAlcoholic : '',
       name: recipe.strMeal,
       image: recipe.strMealThumb,
     };
-
+    console.log(recipe);
+    console.log(recipeDataMeal);
     if (isAlreadyFavorite) {
       const newFavoriteRecipes = favoriteRecipes
         .filter((favRecipe) => favRecipe.id !== idPath);
       localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteRecipes));
     } else {
-      favoriteRecipes.push(recipeData);
+      favoriteRecipes.push(typePath === 'meals' ? recipeDataMeal : recipeDataDrink);
       localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
     }
 
@@ -65,8 +75,10 @@ function FavoriteButton({ recipe }) {
 FavoriteButton.propTypes = {
   recipe: PropTypes.shape({
     idMeal: PropTypes.string.isRequired,
-    strMeal: PropTypes.string.isRequired,
+    strMeal: PropTypes.string,
     strMealThumb: PropTypes.string.isRequired,
+    strDrink: PropTypes.string.isRequired,
+    strDrinkThumb: PropTypes.string.isRequired,
     strCategory: PropTypes.string.isRequired,
     strArea: PropTypes.string.isRequired,
     strInstructions: PropTypes.string.isRequired,

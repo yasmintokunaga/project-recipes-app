@@ -36,6 +36,7 @@ function DrinksDetails() {
       const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
       const data = await response.json();
       setRecipe(data.drinks[0]);
+    console.log(data.drinks);
       const meals = await fetchRecipesMeals();
       if (Array.isArray(meals)) {
         setMealsRecommendation(meals.slice(0, MAX_MEALS));
@@ -114,7 +115,7 @@ function DrinksDetails() {
           </div>
         ))}
       </Slider>
-      <StartRecipeButton />
+      {/* <StartRecipeButton /> */}
     </div>
   );
 }
