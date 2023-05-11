@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import blackHeartIcon from '../../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 
-function FavoriteButton({ recipe, type }) {
+function FavoriteButton({ recipe }) {
   const [favorite, setFavorite] = useState(false);
 
   const iconPath = favorite ? blackHeartIcon : whiteHeartIcon;
   const idPath = window.location.pathname.split('/')[2];
-  console.log(idPath);
+  const typePath = window.location.pathname.split('/')[1];
 
   useEffect(() => {
     const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
@@ -19,28 +19,30 @@ function FavoriteButton({ recipe, type }) {
 
   function handleFavoriteClick() {
     const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
-    console.log(favoriteRecipes);
     const isAlreadyFavorite = favoriteRecipes
       .some((favRecipe) => favRecipe.id === idPath);
-    console.log(idPath);
+
+    const recipeData = {
+      id: idPath,
+      type: typePath,
+      nationality: recipe.strArea,
+      category: recipe.strCategory,
+      alcoholicOrNot: recipe.strAlcoholic,
+      name: recipe.strMeal,
+      image: recipe.strMealThumb,
+    };
+
     if (isAlreadyFavorite) {
       const newFavoriteRecipes = favoriteRecipes
         .filter((favRecipe) => favRecipe.id !== idPath);
       localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteRecipes));
     } else {
-      favoriteRecipes.push({
-        id: idPath,
-        type,
-        nationality: recipe.strArea,
-        category: recipe.strCategory,
-        alcoholicOrNot: recipe.strAlcoholic,
-        name: recipe.strMeal,
-        image: recipe.strMealThumb,
-      });
+      favoriteRecipes.push(recipeData);
       localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
     }
 
     setFavorite(!favorite);
+    console.log(favoriteRecipes);
   }
 
   return (
@@ -70,7 +72,6 @@ FavoriteButton.propTypes = {
     strInstructions: PropTypes.string.isRequired,
     strAlcoholic: PropTypes.string,
   }).isRequired,
-  type: PropTypes.string.isRequired,
 };
 
 export default FavoriteButton;

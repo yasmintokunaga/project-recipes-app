@@ -11,7 +11,6 @@ function ShareButton({ testId, handleClickShareBtn }) {
         src={ shareBtn }
         onClick={ handleClickShareBtn }
         data-testid={ testId }
-        src={ shareBtn }
       >
         <img
           src={ shareBtn }
