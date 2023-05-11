@@ -23,18 +23,13 @@ function StartRecipeButton() {
     setDoneRecipes(MadeRecipes);
   }, [idPath]);
 
-  const onClick = () => {
-    const path = InProgress ? `/${typePath}/${idPath}/in-progress`
-      : `/${typePath}/${idPath}/start-recipe`;
-    history.push(path);
-  };
   if (!DoneRecipes) {
     return (
       <button
         type="button"
         data-testid="start-recipe-btn"
         style={ { position: 'fixed', bottom: 0 } }
-        onClick={ onClick }
+        onClick={ () => history.push(`/${typePath}/${idPath}/in-progress`) }
         src={ InProgress ? 'Continue Recipe' : 'Start Recipe' }
       >
         {InProgress ? 'Continue Recipe' : 'Start Recipe'}
