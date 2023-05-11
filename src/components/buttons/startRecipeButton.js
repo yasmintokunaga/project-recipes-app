@@ -9,13 +9,15 @@ function StartRecipeButton() {
   const history = useHistory();
 
   useEffect(() => {
-    const inProgressRecipe = JSON.parse(localStorage.getItem('inProgressRecipes')) || [];
-    console.log(inProgressRecipe);
-    const isInProgress = inProgressRecipe
-      .some((progress) => progress.id === idPath);
-    setInProgress(isInProgress);
-    console.log(inProgressRecipe);
+    if (localStorage.getItem('inProgressRecipes')) {
+      const inProgressRecipe = JSON.parse(localStorage.getItem('inProgressRecipes'));
+      console.log(Object.keys(inProgressRecipe[idPath]));
+      const isInProgress = Object.keys(inProgressRecipe[idPath])
+        .some((id) => id === idPath);
+      setInProgress(isInProgress);
+    }
   }, [idPath]);
+
   useEffect(() => {
     const wasDoneRecipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
     const MadeRecipes = wasDoneRecipes

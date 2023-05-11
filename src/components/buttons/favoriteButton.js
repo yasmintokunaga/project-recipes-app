@@ -21,33 +21,35 @@ function FavoriteButton({ recipe }) {
     const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
     const isAlreadyFavorite = favoriteRecipes
       .some((favRecipe) => favRecipe.id === idPath);
-
-    const recipeDataDrink = {
+    
+    const recipeData = typePath === 'drinks' ? (
+      {
       id: idPath,
-      type: typePath,
+      type: 'drink',
       nationality: '',
       category: recipe.strCategory,
       alcoholicOrNot: recipe.strAlcoholic ? recipe.strAlcoholic : '',
       name: recipe.strDrink,
       image: recipe.strDrinkThumb,
-    };
-    const recipeDataMeal = {
-      id: idPath,
-      type: typePath,
-      nationality: recipe.strArea,
-      category: recipe.strCategory,
-      alcoholicOrNot: recipe.strAlcoholic ? recipe.strAlcoholic : '',
-      name: recipe.strMeal,
-      image: recipe.strMealThumb,
-    };
-    console.log(recipe);
-    console.log(recipeDataMeal);
+      }) 
+      : (
+      {
+        id: idPath,
+        type: 'meal',
+        nationality: recipe.strArea,
+        category: recipe.strCategory,
+        alcoholicOrNot: '',
+        name: recipe.strMeal,
+        image: recipe.strMealThumb,
+      });
+
+    console.log(recipeData);
     if (isAlreadyFavorite) {
       const newFavoriteRecipes = favoriteRecipes
         .filter((favRecipe) => favRecipe.id !== idPath);
       localStorage.setItem('favoriteRecipes', JSON.stringify(newFavoriteRecipes));
     } else {
-      favoriteRecipes.push(typePath === 'meals' ? recipeDataMeal : recipeDataDrink);
+      favoriteRecipes.push(recipeData);
       localStorage.setItem('favoriteRecipes', JSON.stringify(favoriteRecipes));
     }
 
@@ -71,6 +73,17 @@ function FavoriteButton({ recipe }) {
     </div>
   );
 }
+
+FavoriteButton.defaultProps = {
+  idMeal: '',
+  strMeal: '',
+  strMealThumb: '',
+  strDrink: '',
+  strDrinkThumb: '',
+  strArea: '',
+  strInstructions: '',
+  strAlcoholic: '',
+};
 
 FavoriteButton.propTypes = {
   recipe: PropTypes.shape({

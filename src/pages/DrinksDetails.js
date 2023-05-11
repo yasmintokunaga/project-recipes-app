@@ -115,7 +115,7 @@ function DrinksDetails() {
           </div>
         ))}
       </Slider>
-      {/* <StartRecipeButton /> */}
+      <StartRecipeButton />
     </div>
   );
 }
