@@ -27,7 +27,6 @@ export default function DoneRecipes() {
   //   tags: ['array-de-tags-da-receita-ou-array-vazio'],
   // }];
 
-  // const [copyLink, setCopyLink] = useState(false);
   const [doneRecipes, setDoneRecipes] = useState([]);
   const [copyLink, setCopyLink] = useState(false);
   const [filtredDoneRecipes, setFiltredDoneRecipes] = useState([]);
@@ -135,7 +134,6 @@ export default function DoneRecipes() {
             </div>
           ))}
       </section>
-
     </div>
   );
 }
