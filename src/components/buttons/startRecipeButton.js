@@ -1,4 +1,3 @@
-import { object } from 'prop-types';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -12,11 +11,11 @@ function StartRecipeButton() {
   useEffect(() => {
     if (localStorage.getItem('inProgressRecipes')) {
       const inProgressRecipe = JSON.parse(localStorage.getItem('inProgressRecipes'));
-      const isInProgress = inProgressRecipe[typePath] ?
-        Object.keys(inProgressRecipe[typePath]).some((id) => id === idPath) : false
+      const isInProgress = inProgressRecipe[typePath]
+        ? Object.keys(inProgressRecipe[typePath]).some((id) => id === idPath) : false;
       setInProgress(isInProgress);
     }
-  }, [idPath]);
+  }, [idPath, typePath]);
 
   useEffect(() => {
     const wasDoneRecipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
