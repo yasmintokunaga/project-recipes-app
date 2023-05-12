@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import copy from 'clipboard-copy';
 import listOfIngredients from '../services/listOfIngredients';
+
 import ShareButton from '../components/buttons/shareButton';
 
-function MealsInProgress() {
-  const { id } = useParams();
+function DrinksInProcess() {
   const history = useHistory();
-  const [recipe, setRecipe] = useState(null);
+  const { id } = useParams();
+  const [recipe, setRecipe] = useState([]);
   const [isChecked, setIsChecked] = useState({});
   const [copyLink, setCopyLink] = useState(false);
-
+  const [doneRecipesMock, setDoneRecipesMock] = useState([]);
+  const dateNow = new Date();
   const location = window.location.href;
   const share = location.replace(/(\/(?:meals|drinks)\/\d+)\/.*/, '$1');
 
@@ -19,15 +21,7 @@ function MealsInProgress() {
     setCopyLink(true);
   };
 
-  useEffect(() => {
-    async function fetchRecipeData() {
-      const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
-      const data = await response.json();
-      setRecipe(data.drinks[0]);
-    }
-
-    fetchRecipeData();
-  }, [id]);
+  const tags = recipe.strTags ? recipe.strTags.split(',') : [];
 
   useEffect(() => {
     const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {
@@ -37,9 +31,35 @@ function MealsInProgress() {
     setIsChecked(saveProgressLS.drinks[id] || []);
   }, [id]);
 
+  useEffect(() => {
+    async function fetchRecipeData() {
+      const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
+      const data = await response.json();
+      const result = data.drinks[0];
+      setRecipe(result);
+      console.log(result);
+    }
+
+    fetchRecipeData();
+  }, [id]);
+
   if (!recipe) {
     return <p>Loading...</p>;
   }
+
+  const doneRecipes = [
+    {
+      id: recipe.idDrink,
+      type: 'drink',
+      nationality: recipe.strArea,
+      category: recipe.strCategory,
+      alcoholicOrNot: recipe.trAlcoholic ? recipe.trAlcoholic : '',
+      name: recipe.strDrink,
+      image: recipe.strDrinkThumb,
+      doneDate: dateNow.toISOString(),
+      tags,
+    },
+  ];
 
   const onChange = ({ target }) => {
     const { checked } = target;
@@ -63,13 +83,21 @@ function MealsInProgress() {
     setIsChecked(saveProgressLS.drinks[id]);
   };
 
+  const handleClick = () => {
+    const recipesFromLocalStorage = JSON.parse(localStorage.getItem('doneRecipes'))
+      || doneRecipesMock;
+
+    setDoneRecipesMock(recipesFromLocalStorage);
+    history.push('/done-recipes');
+    localStorage.setItem('doneRecipes', JSON.stringify(doneRecipes));
+  };
+
   const {
     strDrink,
     strDrinkThumb,
     strCategory,
-    strAlcoholic,
     strInstructions,
-  } = recipe;
+  } = recipe || {};
 
   const ingredients = listOfIngredients(recipe);
 
@@ -80,8 +108,6 @@ function MealsInProgress() {
       </h1>
       <h4 data-testid="recipe-category">
         {strCategory}
-        { ' '}
-        {strAlcoholic}
       </h4>
       <img
         data-testid="recipe-photo"
@@ -93,7 +119,6 @@ function MealsInProgress() {
         const isCheckedIngredient = isChecked.includes(ingredient);
         const textDecoration = isCheckedIngredient
           ? 'line-through solid rgb(0, 0, 0)' : '';
-        console.log(ingredient);
         return (
           <label
             key={ index }
@@ -103,9 +128,9 @@ function MealsInProgress() {
             <input
               type="checkbox"
               name={ ingredient }
-              onChange={ onChange }
               value={ ingredient }
               checked={ isCheckedIngredient }
+              onChange={ onChange }
             />
             <label htmlFor={ ingredient }>
               {` ${measure} - ${ingredient}`}
@@ -123,7 +148,6 @@ function MealsInProgress() {
       >
         Favorite
       </button>
-
       <ShareButton
         testId="share-btn"
         handleClickShareBtn={ () => handleClickShareBtn() }
@@ -134,7 +158,7 @@ function MealsInProgress() {
         type="button"
         data-testid="finish-recipe-btn"
         disabled={ isChecked.length !== Object.keys(ingredients).length }
-        onClick={ () => history.push('/done-recipes') }
+        onClick={ () => handleClick() }
       >
         Finish Recipe
       </button>
@@ -142,4 +166,4 @@ function MealsInProgress() {
   );
 }
 
-export default MealsInProgress;
+export default DrinksInProcess;
