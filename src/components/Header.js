@@ -16,17 +16,12 @@ function Header({ title, searchBool }) {
         <img
           src={ profileLogo }
           alt="clique para ir ao perfil"
-          data-testid="profile-top-btn"
+          // data-testid="profile-top-btn"
         />
       </button>
       {searchBool && (
         <SearchBar />
       )}
-      {searchBool && <img
-        src={ searchIcon }
-        alt="icone para realizar pesquisa"
-        data-testid="search-top-btn"
-      />}
       {title !== '' && <h1 data-testid="page-title">{title}</h1>}
     </header>
   );

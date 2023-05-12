@@ -1,45 +1,46 @@
-import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useContext, useState } from 'react';
+// import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import searchIcon from '../images/searchIcon.svg';
-import { fetchRecipeByType } from '../services/fetchRecipiesByCategory';
+import { RecipesContext } from '../context/RecipesProvider';
 
 function SearchBar() {
   const [open, setOpen] = useState(false);
   const [radioV, setRadioV] = useState('');
   const [parameter, setParameter] = useState('');
-  const [items, setItems] = useState([]);
-  const history = useHistory();
+  // const [items, setItems] = useState([]);
+  // const history = useHistory();
 
-  const path = window.location.pathname;
+  // const path = window.location.pathname;
+  const { handleClickExec } = useContext(RecipesContext);
 
-  async function handleClickExec() {
-    if (radioV === 'ing') {
-      await fetchRecipeByType('i', parameter, 'filter', path.slice(1)).then((item) => {
-        setItems(item);
-      });
-    } else if (radioV === 'name') {
-      await fetchRecipeByType('s', parameter, 'search', path.slice(1)).then((item) => {
-        setItems(item);
-      });
-    } else if (radioV === 'fl') {
-      if (parameter.length === 1) {
-        await fetchRecipeByType('f', parameter, 'search', path.slice(1)).then((item) => {
-          setItems(item);
-        });
-      } else {
-        global.alert('Your search must have only 1 (one) character');
-      }
-    }
-  }
+  // async function handleClickExec() {
+  //   if (radioV === 'ing') {
+  //     await fetchRecipeByType('i', parameter, 'filter', path.slice(1)).then((item) => {
+  //       setItems(item);
+  //     });
+  //   } else if (radioV === 'name') {
+  //     await fetchRecipeByType('s', parameter, 'search', path.slice(1)).then((item) => {
+  //       setItems(item);
+  //     });
+  //   } else if (radioV === 'fl') {
+  //     if (parameter.length === 1) {
+  //       await fetchRecipeByType('f', parameter, 'search', path.slice(1)).then((item) => {
+  //         setItems(item);
+  //       });
+  //     } else {
+  //       global.alert('Your search must have only 1 (one) character');
+  //     }
+  //   }
+  // }
 
-  useEffect(() => {
-    if (items.length === 1) {
-      const id = path === '/meals'
-        ? `${path}/${items[0].idMeal}` : `${path}/${items[0].idDrink}`;
+  // useEffect(() => {
+  //   if (items.length === 1) {
+  //     const id = path === '/meals'
+  //       ? `${path}/${items[0].idMeal}` : `${path}/${items[0].idDrink}`;
 
-      history.push(`${id}`);
-    }
-  }, [items, history, path]);
+  //     history.push(`${id}`);
+  //   }
+  // }, [items, history, path]);
 
   return (
     <div>
@@ -93,7 +94,7 @@ function SearchBar() {
             <button
               data-testid="exec-search-btn"
               onClick={ () => {
-                handleClickExec();
+                handleClickExec(radioV, parameter);
               } }
             >
               Search
