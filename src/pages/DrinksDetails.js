@@ -71,7 +71,7 @@ function DrinksDetails() {
         handleClickShareBtn={ () => handleClickShareBtn() }
       />
       {copyLink && <small>Link copied!</small>}
-      <FavoriteButton recipe={ recipe } />
+      <FavoriteButton testId="favorite-btn" recipe={ recipe } />
       <img
         data-testid="recipe-photo"
         src={ strDrinkThumb }
