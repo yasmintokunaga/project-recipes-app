@@ -1,6 +1,6 @@
 import React from 'react';
 import { createMemoryHistory } from 'history';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Router } from 'react-router-dom';
 import App from '../App';
@@ -13,7 +13,7 @@ const PASSWORD_INPUT = 'password-input';
 const LOGIN_SUBMIT_BTN = 'login-submit-btn';
 describe('Verificando a funcionalidade da página Login', () => {
   beforeEach(() => {
-    fakeFetch = jest.spyOn(global, 'fetch').mockImplementation(mockCypress);
+    jest.spyOn(global, 'fetch').mockImplementation(mockCypress);
   });
   test('Verifica se é possível digitar nos campos email e senha, após isso, clicar no button "Enviar". Espera que a rota mude para "/meals".', async () => {
     const history = createMemoryHistory();
@@ -30,11 +30,9 @@ describe('Verificando a funcionalidade da página Login', () => {
     const passwordElement = screen.getByTestId(PASSWORD_INPUT);
     const btnElement = screen.getByTestId(LOGIN_SUBMIT_BTN);
 
-    await waitFor(() => {
-      userEvent.type(emailElement, 'email@email.com');
-      userEvent.type(passwordElement, '1234567');
-      userEvent.click(btnElement);
-    });
+    userEvent.type(emailElement, 'email@email.com');
+    userEvent.type(passwordElement, '1234567');
+    userEvent.click(btnElement);
     expect(await screen.findByRole('button', { name: /beef/i })).toBeInTheDocument();
     expect(history.location.pathname).toBe('/meals');
   });

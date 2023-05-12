@@ -30,9 +30,9 @@ function MealsDetails() {
       const data = await response.json();
       setRecipe(data.meals[0]);
       const drinks = await fetchRecipesDrinks();
-      if (Array.isArray(drinks)) {
-        setDrinksRecommendation(drinks.slice(0, MAX_DRINKS));
-      }
+      setDrinksRecommendation(drinks.slice(0, MAX_DRINKS));
+      // if (Array.isArray(drinks)) {
+      // } é mesmo preciso dessa linha de código?
     }
 
     fetchRecipeData();

@@ -1,6 +1,6 @@
 import React from 'react';
 import { createMemoryHistory } from 'history';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Router } from 'react-router-dom';
 import copy from 'clipboard-copy';
@@ -37,10 +37,15 @@ describe('Verificando a funcionalidade da página Profile', () => {
     userEvent.type(emailElement, 'trybe@teste.com');
     userEvent.type(passwordElement, '1234567');
     userEvent.click(btnElement);
+    await waitFor(() => {
+      expect(screen.getByTestId('drinks-bottom-btn')).toBeInTheDocument();
+    });
+    const btnDrinks = screen.getByTestId('drinks-bottom-btn');
     
-    const linkCorba = await screen.findByText(/corba/i);
-    
-    userEvent.click(linkCorba);
+    userEvent.click(btnDrinks);
+    const linkGG = await screen.findByText(/gg/i)
+    expect(linkGG).toBeInTheDocument();
+    userEvent.click(linkGG);
     const loading = screen.getByText(/loading/i);
     expect(loading).toBeInTheDocument();
     const btnFavorite = await screen.findByRole('button', { name: /favoritar/i });
@@ -64,6 +69,31 @@ describe('Verificando a funcionalidade da página Profile', () => {
     expect(screen.getByTestId('0-ingredient-step')).not.toHaveStyle('textDecoration: line-through solid rgb(0, 0, 0)')
     const btnFinish = screen.getByRole('button', { name: /finish recipe/i });
     userEvent.click(btnFinish);
+    const xablau = [{
+      id: '5120',
+      type: 'drink',
+      nationality: 'nacionalidade-da-receita-ou-texto-vazio',
+      category: 'categoria-da-receita-ou-texto-vazio',
+      alcoholicOrNot: 'alcoholic-ou-non-alcoholic-ou-texto-vazio',
+      name: 'nome-da-receita',
+      image: 'imagem-da-receita',
+      doneDate: 'quando-a-receita-foi-concluida',
+      tags: ['array-de-tags-da-receita-ou-array-vazio'],
+    }];
+    localStorage.setItem('doneRecipes', JSON.stringify(xablau));
     expect(history.location.pathname).toBe('/done-recipes');
+    const btns = screen.getAllByRole('button');
+    expect(btns).toHaveLength(4)
+    const allBtn = screen.getByTestId('filter-by-all-btn')
+    const mealBtn = screen.getByTestId('filter-by-meal-btn')
+    const drinkBtn = screen.getByTestId('filter-by-drink-btn')
+    userEvent.click(allBtn)
+    userEvent.click(mealBtn)
+    userEvent.click(drinkBtn)
+    const shareBtn = screen.getByTestId('0-horizontal-share-btn')
+    userEvent.click(shareBtn);
+    await waitFor(() => {
+      expect(screen.getByText(/link copied!/i)).toBeInTheDocument();
+    });
   });
 });
