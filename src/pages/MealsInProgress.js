@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import copy from 'clipboard-copy';
 import listOfIngredients from '../services/listOfIngredients';
-
 import ShareButton from '../components/buttons/shareButton';
 
 function MealsInProgress() {
