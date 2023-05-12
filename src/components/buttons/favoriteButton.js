@@ -11,7 +11,7 @@ function FavoriteButton({ recipe, testId }) {
   const typePath = window.location.pathname.split('/')[1];
 
   useEffect(() => {
-    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || {};
     const isAlreadyFavorite = favoriteRecipes
       .some((favRecipe) => favRecipe.id === idPath);
     setFavorite(isAlreadyFavorite);
@@ -74,6 +74,17 @@ function FavoriteButton({ recipe, testId }) {
   );
 }
 
+// FavoriteButton.defaultProps = {
+//   idMeal: '',
+//   strMeal: '',
+//   strMealThumb: '',
+//   strDrink: '',
+//   strDrinkThumb: '',
+//   strArea: '',
+//   strInstructions: '',
+//   strAlcoholic: '',
+// };
+
 FavoriteButton.propTypes = {
   recipe: PropTypes.shape({
     idMeal: PropTypes.string.isRequired,
@@ -85,19 +96,8 @@ FavoriteButton.propTypes = {
     strArea: PropTypes.string.isRequired,
     strInstructions: PropTypes.string.isRequired,
     strAlcoholic: PropTypes.string,
-    testId: PropTypes.string.isRequired,
   }).isRequired,
+  testId: PropTypes.string.isRequired,
 };
-
-// FavoriteButton.defaultProps = {
-//   idMeal: '',
-//   strMeal: '',
-//   strMealThumb: '',
-//   strDrink: '',
-//   strDrinkThumb: '',
-//   strArea: '',
-//   strInstructions: '',
-//   strAlcoholic: '',
-// };
 
 export default FavoriteButton;
