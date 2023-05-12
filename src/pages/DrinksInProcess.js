@@ -49,11 +49,11 @@ function DrinksInProcess() {
 
   const doneRecipes = [
     {
-      id: recipe.idDrink,
+      id,
       type: 'drink',
-      nationality: recipe.strArea,
-      category: recipe.strCategory,
-      alcoholicOrNot: recipe.trAlcoholic ? recipe.trAlcoholic : '',
+      nationality: recipe.strArea ? recipe.strArea : '',
+      category: recipe.strCategory ? recipe.strCategory : '',
+      alcoholicOrNot: recipe.strAlcoholic ? recipe.strAlcoholic : '',
       name: recipe.strDrink,
       image: recipe.strDrinkThumb,
       doneDate: dateNow.toISOString(),

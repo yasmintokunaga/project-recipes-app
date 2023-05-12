@@ -49,11 +49,11 @@ function MealsInProgress() {
 
   const doneRecipes = [
     {
-      id: recipe.idMeal,
+      id,
       type: 'meal',
-      nationality: recipe.strArea,
-      category: recipe.strCategory,
-      alcoholicOrNot: '',
+      nationality: recipe.strArea ? recipe.strArea : '',
+      category: recipe.strCategory ? recipe.strCategory : '',
+      alcoholicOrNot: recipe.strAlcoholic ? recipe.strAlcoholic : '',
       name: recipe.strMeal,
       image: recipe.strMealThumb,
       doneDate: dateNow.toISOString(),
