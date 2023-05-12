@@ -2,10 +2,20 @@ import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import copy from 'clipboard-copy';
 import listOfIngredients from '../services/listOfIngredients';
+<<<<<<< HEAD:src/pages/MealsInProgress.js
 
 import ShareButton from '../components/buttons/shareButton';
 
 function MealsInProgress() {
+=======
+//test
+function MealInProgress() {
+  const { id } = useParams();
+  const [recipe, setRecipe] = useState(null);
+
+  const [isChecked, setIsChecked] = useState({});
+
+>>>>>>> testing-application:src/pages/MealInProgress.js
   const history = useHistory();
   const { id } = useParams();
   const [recipe, setRecipe] = useState([]);
@@ -166,4 +176,4 @@ function MealsInProgress() {
   );
 }
 
-export default MealsInProgress;
+export default MealInProgress;
