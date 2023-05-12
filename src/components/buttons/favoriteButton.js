@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import blackHeartIcon from '../../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 
-function FavoriteButton({ recipe, testId }) {
+function FavoriteButton({ recipe }) {
   const [favorite, setFavorite] = useState(false);
 
   const iconPath = favorite ? blackHeartIcon : whiteHeartIcon;
@@ -11,7 +11,7 @@ function FavoriteButton({ recipe, testId }) {
   const typePath = window.location.pathname.split('/')[1];
 
   useEffect(() => {
-    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || {};
+    const favoriteRecipes = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
     const isAlreadyFavorite = favoriteRecipes
       .some((favRecipe) => favRecipe.id === idPath);
     setFavorite(isAlreadyFavorite);
@@ -61,14 +61,10 @@ function FavoriteButton({ recipe, testId }) {
     <div className="div-favorite-btn">
       <button
         type="button"
-        data-testid={ testId }
+        data-testid="favorite-btn"
         onClick={ handleFavoriteClick }
         src={ iconPath }
       >
-        <img
-          src={ iconPath }
-          alt={ favorite ? 'Favoritado' : 'Não favoritado' }
-        />
         <img
           src={ iconPath }
           alt={ favorite ? 'Favoritado' : 'Não favoritado' }
@@ -77,17 +73,6 @@ function FavoriteButton({ recipe, testId }) {
     </div>
   );
 }
-
-// FavoriteButton.defaultProps = {
-//   idMeal: '',
-//   strMeal: '',
-//   strMealThumb: '',
-//   strDrink: '',
-//   strDrinkThumb: '',
-//   strArea: '',
-//   strInstructions: '',
-//   strAlcoholic: '',
-// };
 
 FavoriteButton.propTypes = {
   recipe: PropTypes.shape({
@@ -101,7 +86,6 @@ FavoriteButton.propTypes = {
     strInstructions: PropTypes.string.isRequired,
     strAlcoholic: PropTypes.string,
   }).isRequired,
-  testId: PropTypes.string.isRequired,
 };
 
 export default FavoriteButton;

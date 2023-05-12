@@ -5,28 +5,6 @@ import Header from '../components/Header';
 import ShareButton from '../components/buttons/shareButton';
 
 export default function DoneRecipes() {
-  // const xablau = [{
-  //   id: '01',
-  //   type: 'meal',
-  //   nationality: 'nacionalidade-da-receita-ou-texto-vazio',
-  //   category: 'categoria-da-receita-ou-texto-vazio',
-  //   alcoholicOrNot: 'alcoholic-ou-non-alcoholic-ou-texto-vazio',
-  //   name: 'larissão',
-  //   image: 'imagem-da-receita',
-  //   doneDate: 'quando-a-receita-foi-concluida',
-  //   tags: ['array-de-tags-da-receita-ou-array-vazio'],
-  // }, {
-  //   id: '02',
-  //   type: 'drink',
-  //   nationality: 'nacionalidade-da-receita-ou-texto-vazio',
-  //   category: 'categoria-da-receita-ou-texto-vazio',
-  //   alcoholicOrNot: 'alcoholic-ou-non-alcoholic-ou-texto-vazio',
-  //   name: 'lalalarys',
-  //   image: 'imagem-da-receita',
-  //   doneDate: 'quando-a-receita-foi-concluida',
-  //   tags: ['array-de-tags-da-receita-ou-array-vazio'],
-  // }];
-
   const [doneRecipes, setDoneRecipes] = useState([]);
   const [copyLink, setCopyLink] = useState(false);
   const [filtredDoneRecipes, setFiltredDoneRecipes] = useState([]);
@@ -35,7 +13,6 @@ export default function DoneRecipes() {
     if (localStorage.getItem('doneRecipes')) {
       setDoneRecipes(JSON.parse(localStorage.getItem('doneRecipes')));
     }
-    // setDoneRecipes(xablau);
   }, []);
 
   const handleClickShareBtn = (type, id) => {

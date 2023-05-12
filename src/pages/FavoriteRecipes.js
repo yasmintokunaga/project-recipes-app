@@ -3,7 +3,7 @@ import copy from 'clipboard-copy';
 import shareBtn from '../images/shareIcon.svg';
 import Header from '../components/Header';
 import ShareButton from '../components/buttons/shareButton';
-import FavoriteButton from '../components/buttons/favoriteButton';
+import blackHeartIcon from '../images/blackHeartIcon.svg';
 
 export default function FavoriteRecipes() {
   // const xablau = [
@@ -30,7 +30,7 @@ export default function FavoriteRecipes() {
   const [favoriteRecipes, setFavoriteRecipes] = useState([]);
 
   const [copyLink, setCopyLink] = useState(false);
-  const [filtredFavoriteRecipes, setfiltredFavoriteRecipes] = useState([]);
+  const [filteredFavoriteRecipes, setFilteredFavoriteRecipes] = useState([]);
 
   useEffect(() => {
     if (localStorage.getItem('favoriteRecipes')) {
@@ -39,27 +39,31 @@ export default function FavoriteRecipes() {
     // setFavoriteRecipes(xablau);
   }, []);
 
-  console.log(favoriteRecipes);
+  const handleFavoriteRemove = (id) => {
+    const updatedRecipes = favoriteRecipes.filter((recipe) => recipe.id !== id);
+    setFavoriteRecipes(updatedRecipes);
+    localStorage.setItem('favoriteRecipes', JSON.stringify(updatedRecipes));
+  };
+
   const handleClickShareBtn = (type, id) => {
     copy(`http://localhost:3000/${type}s/${id}`);
     setCopyLink(true);
   };
 
   const handleClickFilter = (type) => {
-    let filtredFavoriteRecipe = [];
+    let filteredRecipes = [];
     switch (type) {
-    case 'drink':
-      filtredFavoriteRecipe = doneRecipes.filter((recipe) => recipe.type === 'drink');
-      setfiltredFavoriteRecipes(filtredFavoriteRecipe);
-      break;
     case 'meal':
-      filtredFavoriteRecipe = doneRecipes.filter((recipe) => recipe.type === 'meal');
-      setfiltredFavoriteRecipes(filtredFavoriteRecipe);
+      filteredRecipes = favoriteRecipes.filter((recipe) => recipe.type === 'meal');
+      break;
+    case 'drink':
+      filteredRecipes = favoriteRecipes.filter((recipe) => recipe.type === 'drink');
       break;
     default:
-      setfiltredFavoriteRecipes([]);
+      filteredRecipes = favoriteRecipes;
       break;
     }
+    setFilteredFavoriteRecipes(filteredRecipes);
   };
 
   return (
@@ -68,7 +72,7 @@ export default function FavoriteRecipes() {
         <Header title="Favorite Recipes" searchBool={ false } />
         <button
           data-testid="filter-by-all-btn"
-          onClick={ () => handleClickFilter('favoriteRecipes') }
+          onClick={ () => handleClickFilter('all') }
         >
           All
 
@@ -76,7 +80,6 @@ export default function FavoriteRecipes() {
         <button
           data-testid="filter-by-meal-btn"
           onClick={ () => handleClickFilter('meal') }
-          value="meal"
         >
           Meals
 
@@ -84,14 +87,13 @@ export default function FavoriteRecipes() {
         <button
           data-testid="filter-by-drink-btn"
           onClick={ () => handleClickFilter('drink') }
-          value="drink"
         >
           Drinks
 
         </button>
       </section>
       <section>
-        {(filtredFavoriteRecipes.length ? filtredFavoriteRecipes : favoriteRecipes)
+        {(filteredFavoriteRecipes.length > 0 ? filteredFavoriteRecipes : favoriteRecipes)
           .map((recipe, index) => (
             <div key={ recipe.id }>
               <a href={ `http://localhost:3000/${recipe.type}s/${recipe.id}` }>
@@ -117,21 +119,19 @@ export default function FavoriteRecipes() {
                 testId={ `${index}-horizontal-share-btn` }
                 handleClickShareBtn={ () => handleClickShareBtn(recipe.type, recipe.id) }
               />
-              <FavoriteButton
-                recipe={ recipe }
-                testId={ `${index}-horizontal-favorite-btn` }
-              />
+              <button
+                type="button"
+                data-testid={ `${index}-horizontal-favorite-btn` }
+                onClick={ () => handleFavoriteRemove(recipe.id) }
+                src={ blackHeartIcon }
+              >
+                <img
+                  src={ blackHeartIcon }
+                  alt="Remover"
+                />
+              </button>
+
               {copyLink && <small>Link copied!</small>}
-              {/* <div>
-                {recipe.tags.map((tagName) => (
-                  <p
-                    key={ tagName }
-                    data-testid={ `${index}-${tagName}-horizontal-tag` }
-                  >
-                    {tagName}
-                  </p>
-                ))}
-              </div> */}
             </div>
           ))}
       </section>
