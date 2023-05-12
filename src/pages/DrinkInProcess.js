@@ -4,6 +4,7 @@ import copy from 'clipboard-copy';
 import listOfIngredients from '../services/listOfIngredients';
 
 import ShareButton from '../components/buttons/shareButton';
+import FavoriteButton from '../components/buttons/favoriteButton';
 
 function DrinksInProcess() {
   const history = useHistory();
@@ -142,12 +143,7 @@ function DrinksInProcess() {
       <p data-testid="instructions">
         {strInstructions}
       </p>
-      <button
-        type="button"
-        data-testid="favorite-btn"
-      >
-        Favorite
-      </button>
+      <FavoriteButton recipe={ recipe } />
       <ShareButton
         testId="share-btn"
         handleClickShareBtn={ () => handleClickShareBtn() }
