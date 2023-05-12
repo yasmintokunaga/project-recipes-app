@@ -4,7 +4,7 @@ import copy from 'clipboard-copy';
 import listOfIngredients from '../services/listOfIngredients';
 import ShareButton from '../components/buttons/shareButton';
 
-function MealsInProgress() {
+function MealInProgress() {
   const history = useHistory();
   const { id } = useParams();
   const [recipe, setRecipe] = useState([]);
@@ -165,4 +165,4 @@ function MealsInProgress() {
   );
 }
 
-export default MealsInProgress;
+export default MealInProgress;
