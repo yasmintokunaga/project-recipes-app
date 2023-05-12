@@ -33,29 +33,29 @@ describe('Verificando a funcionalidade da página Login', () => {
     userEvent.type(emailElement, 'teste@teste.com');
     userEvent.type(passwordElement, '1234567');
     userEvent.click(btnElement);
-    
+
     expect(history.location.pathname).toBe('/meals');
     expect(await screen.findByRole('button', { name: /beef/i })).toBeInTheDocument();
     const btnsElements = screen.getAllByRole('button');
     expect(btnsElements).toHaveLength(9);
-    
+
     userEvent.click(btnsElements[0]);
-    
+
     const textBeef = await screen.findByText(/beef and mustard pie/i);
     expect(textBeef).toBeInTheDocument();
 
     userEvent.click(btnsElements[5]);
-   
+
     const textCorba = await screen.findByText(/corba/i);
     expect(textCorba).toBeInTheDocument();
-    
+
     userEvent.click(btnsElements[8]);
-    
+
     const textGg = await screen.findByText(/Gg/i);
     expect(textGg).toBeInTheDocument();
-    
+
     userEvent.click(btnsElements[7]);
-    
+
     const textG = await screen.findByText(/corba/i);
     expect(textG).toBeInTheDocument();
   });

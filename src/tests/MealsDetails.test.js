@@ -33,13 +33,13 @@ describe('Verificando a funcionalidade da página Profile', () => {
     const emailElement = screen.getByTestId(EMAIL_INPUT);
     const passwordElement = screen.getByTestId(PASSWORD_INPUT);
     const btnElement = screen.getByTestId(LOGIN_SUBMIT_BTN);
-    
+
     userEvent.type(emailElement, 'trybe@teste.com');
     userEvent.type(passwordElement, '1234567');
     userEvent.click(btnElement);
-    
+
     const linkCorba = await screen.findByText(/corba/i);
-    
+
     userEvent.click(linkCorba);
     const loading = screen.getByText(/loading/i);
     expect(loading).toBeInTheDocument();
@@ -48,20 +48,20 @@ describe('Verificando a funcionalidade da página Profile', () => {
     const btnShare = await screen.findByTestId('share-btn');
     expect(btnFavorite).toBeInTheDocument();
     expect(btnShare).toBeInTheDocument();
-    
+
     userEvent.click(btnShare);
-    
+
     expect(copy).toBeCalled();
-    
+
     expect(screen.getByText(/link copied!/i)).toBeInTheDocument();
     userEvent.click(btnStart);
-  
+
     expect(await screen.findByTestId('recipe-title')).toBeInTheDocument();
     const checkbox = screen.getAllByRole('checkbox');
     userEvent.click(checkbox[0]);
-    expect(screen.getByTestId('0-ingredient-step')).toHaveStyle('textDecoration: line-through solid rgb(0, 0, 0)')
+    expect(screen.getByTestId('0-ingredient-step')).toHaveStyle('textDecoration: line-through solid rgb(0, 0, 0)');
     userEvent.click(checkbox[0]);
-    expect(screen.getByTestId('0-ingredient-step')).not.toHaveStyle('textDecoration: line-through solid rgb(0, 0, 0)')
+    expect(screen.getByTestId('0-ingredient-step')).not.toHaveStyle('textDecoration: line-through solid rgb(0, 0, 0)');
     const btnFinish = screen.getByRole('button', { name: /finish recipe/i });
     userEvent.click(btnFinish);
     expect(history.location.pathname).toBe('/done-recipes');

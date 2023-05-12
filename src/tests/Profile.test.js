@@ -31,37 +31,35 @@ describe('Verificando a funcionalidade da página Profile', () => {
     const emailElement = screen.getByTestId(EMAIL_INPUT);
     const passwordElement = screen.getByTestId(PASSWORD_INPUT);
     const btnElement = screen.getByTestId(LOGIN_SUBMIT_BTN);
-    
+
     userEvent.type(emailElement, 'trybe@teste.com');
     userEvent.type(passwordElement, '1234567');
     userEvent.click(btnElement);
-    
 
     expect(await screen.findByRole('button', { name: /beef/i })).toBeInTheDocument();
 
     const btnProfile = screen.getByTestId(PROFILE_TOP_BTN);
-    
+
     userEvent.click(btnProfile);
-    
+
     const btnDoneRecipes = await screen.findByTestId('profile-done-btn');
-    
+
     userEvent.click(btnDoneRecipes);
-    
+
     const btn = screen.getByTestId(PROFILE_TOP_BTN);
-    
+
     userEvent.click(btn);
-    
+
     const btnFavoriteRecipes = screen.getByTestId('profile-favorite-btn');
-    
+
     userEvent.click(btnFavoriteRecipes);
-    
+
     const btn1 = screen.getByTestId(PROFILE_TOP_BTN);
-    
+
     userEvent.click(btn1);
-    
+
     const btnLogout = screen.getByTestId('profile-logout-btn');
-    
+
     userEvent.click(btnLogout);
-    
   });
 });

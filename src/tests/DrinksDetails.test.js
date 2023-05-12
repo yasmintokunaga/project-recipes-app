@@ -33,7 +33,7 @@ describe('Verificando a funcionalidade da página Profile', () => {
     const emailElement = screen.getByTestId(EMAIL_INPUT);
     const passwordElement = screen.getByTestId(PASSWORD_INPUT);
     const btnElement = screen.getByTestId(LOGIN_SUBMIT_BTN);
-    
+
     userEvent.type(emailElement, 'trybe@teste.com');
     userEvent.type(passwordElement, '1234567');
     userEvent.click(btnElement);
@@ -41,9 +41,9 @@ describe('Verificando a funcionalidade da página Profile', () => {
       expect(screen.getByTestId('drinks-bottom-btn')).toBeInTheDocument();
     });
     const btnDrinks = screen.getByTestId('drinks-bottom-btn');
-    
+
     userEvent.click(btnDrinks);
-    const linkGG = await screen.findByText(/gg/i)
+    const linkGG = await screen.findByText(/gg/i);
     expect(linkGG).toBeInTheDocument();
     userEvent.click(linkGG);
     const loading = screen.getByText(/loading/i);
@@ -53,20 +53,20 @@ describe('Verificando a funcionalidade da página Profile', () => {
     const btnShare = await screen.findByTestId('share-btn');
     expect(btnFavorite).toBeInTheDocument();
     expect(btnShare).toBeInTheDocument();
-    
+
     userEvent.click(btnShare);
-    
+
     expect(copy).toBeCalled();
-    
+
     expect(screen.getByText(/link copied!/i)).toBeInTheDocument();
     userEvent.click(btnStart);
-  
+
     expect(await screen.findByTestId('recipe-title')).toBeInTheDocument();
     const checkbox = screen.getAllByRole('checkbox');
     userEvent.click(checkbox[0]);
-    expect(screen.getByTestId('0-ingredient-step')).toHaveStyle('textDecoration: line-through solid rgb(0, 0, 0)')
+    expect(screen.getByTestId('0-ingredient-step')).toHaveStyle('textDecoration: line-through solid rgb(0, 0, 0)');
     userEvent.click(checkbox[0]);
-    expect(screen.getByTestId('0-ingredient-step')).not.toHaveStyle('textDecoration: line-through solid rgb(0, 0, 0)')
+    expect(screen.getByTestId('0-ingredient-step')).not.toHaveStyle('textDecoration: line-through solid rgb(0, 0, 0)');
     const btnFinish = screen.getByRole('button', { name: /finish recipe/i });
     userEvent.click(btnFinish);
     const xablau = [{
@@ -83,14 +83,14 @@ describe('Verificando a funcionalidade da página Profile', () => {
     localStorage.setItem('doneRecipes', JSON.stringify(xablau));
     expect(history.location.pathname).toBe('/done-recipes');
     const btns = screen.getAllByRole('button');
-    expect(btns).toHaveLength(4)
-    const allBtn = screen.getByTestId('filter-by-all-btn')
-    const mealBtn = screen.getByTestId('filter-by-meal-btn')
-    const drinkBtn = screen.getByTestId('filter-by-drink-btn')
-    userEvent.click(allBtn)
-    userEvent.click(mealBtn)
-    userEvent.click(drinkBtn)
-    const shareBtn = screen.getByTestId('0-horizontal-share-btn')
+    expect(btns).toHaveLength(4);
+    const allBtn = screen.getByTestId('filter-by-all-btn');
+    const mealBtn = screen.getByTestId('filter-by-meal-btn');
+    const drinkBtn = screen.getByTestId('filter-by-drink-btn');
+    userEvent.click(allBtn);
+    userEvent.click(mealBtn);
+    userEvent.click(drinkBtn);
+    const shareBtn = screen.getByTestId('0-horizontal-share-btn');
     userEvent.click(shareBtn);
     await waitFor(() => {
       expect(screen.getByText(/link copied!/i)).toBeInTheDocument();
