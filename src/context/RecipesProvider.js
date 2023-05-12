@@ -44,31 +44,38 @@ function RecipesProvider({ children }) {
     }
   }, [history, listRecipes, path]);
 
-  const values = useMemo(() => {
-    // const message = 'Sorry, we haven\'t found any recipes for these filters.'
+  const check = (arr) => {
+    console.log(arr);
+    if (arr) {
+      const finalNUmber = 12;
+      return setListRecipes(arr.slice(0, finalNUmber));
+    }
+    global.alert('Sorry, we haven\'t found any recipes for these filters.');
+  };
 
+  const values = useMemo(() => {
     async function handleClickExec(radio, parameter) {
-      console.log('exec');
-      if (radio === 'ing') {
-        await fetchRecipeByType('i', parameter, 'filter', path.slice(1)).then((item) => {
-          console.log(item);
-          setListRecipes(item);
-        });
-      } else if (radio === 'name') {
-        await fetchRecipeByType('s', parameter, 'search', path.slice(1)).then((item) => {
-          console.log(item);
-          setListRecipes(item);
-        });
-      } else if (radio === 'fl') {
+      if (radio === 'fl') {
         if (parameter.length === 1) {
           await fetchRecipeByType('f', parameter, 'search', path.slice(1)).then((ite) => {
-            console.log(ite);
-
-            setListRecipes(ite);
+            check(ite);
           });
         } else {
           global.alert('Your search must have only 1 (one) character');
         }
+        return;
+      }
+      switch (radio) {
+      case 'ing':
+        await fetchRecipeByType('i', parameter, 'filter', path.slice(1)).then((item) => {
+          check(item);
+        });
+        break;
+      default:
+        await fetchRecipeByType('s', parameter, 'search', path.slice(1)).then((item) => {
+          check(item);
+        });
+        break;
       }
     }
 
