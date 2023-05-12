@@ -1,7 +1,7 @@
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import copy from 'clipboard-copy';
 import Slider from 'react-slick';
 import listOfIngredients from '../services/listOfIngredients';
@@ -69,7 +69,7 @@ function MealsDetails() {
         handleClickShareBtn={ () => handleClickShareBtn() }
       />
       {copyLink && <small>Link copied!</small>}
-      <FavoriteButton testId="favorite-btn" />
+      <FavoriteButton testId="favorite-btn" recipe={ recipe } />
       <img
         data-testid="recipe-photo"
         src={ strMealThumb }
@@ -112,9 +112,7 @@ function MealsDetails() {
           </div>
         ))}
       </Slider>
-      <Link to={ `/meals/${id}/in-progress` }>
-        <StartRecipeButton />
-      </Link>
+      <StartRecipeButton />
     </div>
   );
 }

@@ -69,6 +69,10 @@ function FavoriteButton({ recipe, testId }) {
           src={ iconPath }
           alt={ favorite ? 'Favoritado' : 'Não favoritado' }
         />
+        <img
+          src={ iconPath }
+          alt={ favorite ? 'Favoritado' : 'Não favoritado' }
+        />
       </button>
     </div>
   );

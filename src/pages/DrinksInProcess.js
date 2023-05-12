@@ -1,56 +1,103 @@
 import { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
+import copy from 'clipboard-copy';
 import listOfIngredients from '../services/listOfIngredients';
 
-function MealsInProgress() {
-  const { id } = useParams();
-  const [recipe, setRecipe] = useState(null);
+import ShareButton from '../components/buttons/shareButton';
 
-  const [isChecked, setIsChecked] = useState({});
-
+function DrinksInProcess() {
   const history = useHistory();
+  const { id } = useParams();
+  const [recipe, setRecipe] = useState([]);
+  const [isChecked, setIsChecked] = useState({});
+  const [copyLink, setCopyLink] = useState(false);
+  const [doneRecipesMock, setDoneRecipesMock] = useState([]);
+  const dateNow = new Date();
+  const location = window.location.href;
+  const share = location.replace(/(\/(?:meals|drinks)\/\d+)\/.*/, '$1');
+
+  const handleClickShareBtn = () => {
+    copy(share);
+    setCopyLink(true);
+  };
+
+  const tags = recipe.strTags ? recipe.strTags.split(',') : [];
+
+  useEffect(() => {
+    const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {
+      drinks: {},
+      meals: {},
+    };
+    setIsChecked(saveProgressLS.drinks[id] || []);
+  }, [id]);
 
   useEffect(() => {
     async function fetchRecipeData() {
       const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
       const data = await response.json();
-      setRecipe(data.drinks[0]);
+      const result = data.drinks[0];
+      setRecipe(result);
+      console.log(result);
     }
 
     fetchRecipeData();
-  }, [id]);
-
-  useEffect(() => {
-    const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
-    setIsChecked(saveProgressLS[id] || []);
   }, [id]);
 
   if (!recipe) {
     return <p>Loading...</p>;
   }
 
+  const doneRecipes = [
+    {
+      id,
+      type: 'drink',
+      nationality: recipe.strArea ? recipe.strArea : '',
+      category: recipe.strCategory ? recipe.strCategory : '',
+      alcoholicOrNot: recipe.strAlcoholic ? recipe.strAlcoholic : '',
+      name: recipe.strDrink,
+      image: recipe.strDrinkThumb,
+      doneDate: dateNow.toISOString(),
+      tags,
+    },
+  ];
+
   const onChange = ({ target }) => {
     const { checked } = target;
-    const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
-    saveProgressLS[id] = saveProgressLS[id]
-      ? [...saveProgressLS[id], target.name]
-      : [target.name];
+    const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {
+      drinks: {},
+      meals: {},
+    };
 
-    if (!checked) {
-      saveProgressLS[id] = saveProgressLS[id].filter((el) => el !== target.name);
+    if (!saveProgressLS.drinks[id]) {
+      saveProgressLS.drinks[id] = [];
+    }
+
+    if (checked) {
+      saveProgressLS.drinks[id].push(target.name);
+    } else {
+      saveProgressLS.drinks[id] = saveProgressLS.drinks[id]
+        .filter((item) => item !== target.name);
     }
 
     localStorage.setItem('inProgressRecipes', JSON.stringify(saveProgressLS));
-    setIsChecked(saveProgressLS[id]);
+    setIsChecked(saveProgressLS.drinks[id]);
+  };
+
+  const handleClick = () => {
+    const recipesFromLocalStorage = JSON.parse(localStorage.getItem('doneRecipes'))
+      || doneRecipesMock;
+
+    setDoneRecipesMock(recipesFromLocalStorage);
+    history.push('/done-recipes');
+    localStorage.setItem('doneRecipes', JSON.stringify(doneRecipes));
   };
 
   const {
     strDrink,
     strDrinkThumb,
     strCategory,
-    strAlcoholic,
     strInstructions,
-  } = recipe;
+  } = recipe || {};
 
   const ingredients = listOfIngredients(recipe);
 
@@ -61,8 +108,6 @@ function MealsInProgress() {
       </h1>
       <h4 data-testid="recipe-category">
         {strCategory}
-        { ' '}
-        {strAlcoholic}
       </h4>
       <img
         data-testid="recipe-photo"
@@ -83,9 +128,9 @@ function MealsInProgress() {
             <input
               type="checkbox"
               name={ ingredient }
-              onChange={ onChange }
               value={ ingredient }
               checked={ isCheckedIngredient }
+              onChange={ onChange }
             />
             <label htmlFor={ ingredient }>
               {` ${measure} - ${ingredient}`}
@@ -103,18 +148,17 @@ function MealsInProgress() {
       >
         Favorite
       </button>
-
-      <button
-        type="button"
-        data-testid="share-btn"
-      >
-        Share
-      </button>
+      <ShareButton
+        testId="share-btn"
+        handleClickShareBtn={ () => handleClickShareBtn() }
+      />
+      { copyLink && <p>Link copied!</p>}
 
       <button
         type="button"
         data-testid="finish-recipe-btn"
-        onClick={ () => history.push('/done-recipes') }
+        disabled={ isChecked.length !== Object.keys(ingredients).length }
+        onClick={ () => handleClick() }
       >
         Finish Recipe
       </button>
@@ -122,4 +166,4 @@ function MealsInProgress() {
   );
 }
 
-export default MealsInProgress;
+export default DrinksInProcess;
