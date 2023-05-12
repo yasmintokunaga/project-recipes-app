@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Slider from 'react-slick';
 import copy from 'clipboard-copy';
 import 'slick-carousel/slick/slick.css';
@@ -36,10 +36,11 @@ function DrinksDetails() {
       const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
       const data = await response.json();
       setRecipe(data.drinks[0]);
+      console.log(data.drinks);
       const meals = await fetchRecipesMeals();
-      if (Array.isArray(meals)) {
-        setMealsRecommendation(meals.slice(0, MAX_MEALS));
-      }
+      setMealsRecommendation(meals.slice(0, MAX_MEALS));
+      // if (Array.isArray(meals)) {
+      // } é preciso essa linha?
     }
 
     fetchRecipeData();
@@ -70,7 +71,7 @@ function DrinksDetails() {
         handleClickShareBtn={ () => handleClickShareBtn() }
       />
       {copyLink && <small>Link copied!</small>}
-      <FavoriteButton />
+      <FavoriteButton testId="favorite-btn" recipe={ recipe } />
       <img
         data-testid="recipe-photo"
         src={ strDrinkThumb }
@@ -114,9 +115,7 @@ function DrinksDetails() {
           </div>
         ))}
       </Slider>
-      <Link to={ `/drinks/${id}/in-progress` }>
-        <StartRecipeButton />
-      </Link>
+      <StartRecipeButton />
     </div>
   );
 }

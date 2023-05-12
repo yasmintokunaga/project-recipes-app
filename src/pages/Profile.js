@@ -10,8 +10,7 @@ import Header from '../components/Header';
 export default function Profile() {
   const history = useHistory();
 
-  const getLS = localStorage
-    .getItem('user') ? JSON.parse(localStorage.getItem('user')) : '';
+  const getLS = JSON.parse(localStorage.getItem('user'));
 
   const handleClick = () => {
     localStorage.clear();
@@ -21,7 +20,7 @@ export default function Profile() {
   return (
     <div>
       <Header title="Profile" searchBool={ false } />
-      <p data-testid="profile-email">{getLS.email}</p>
+      <p data-testid="profile-email">{getLS && getLS.email}</p>
       <button
         type="button"
         data-testid="profile-done-btn"
