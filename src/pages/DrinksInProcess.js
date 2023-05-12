@@ -1,14 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
+import copy from 'clipboard-copy';
 import listOfIngredients from '../services/listOfIngredients';
+import ShareButton from '../components/buttons/shareButton';
 
 function MealsInProgress() {
   const { id } = useParams();
-  const [recipe, setRecipe] = useState(null);
-
-  const [isChecked, setIsChecked] = useState({});
-
   const history = useHistory();
+  const [recipe, setRecipe] = useState(null);
+  const [isChecked, setIsChecked] = useState({});
+  const [copyLink, setCopyLink] = useState(false);
+
+  const location = window.location.href;
+  const share = location.replace(/(\/(?:meals|drinks)\/\d+)\/.*/, '$1');
+
+  const handleClickShareBtn = () => {
+    copy(share);
+    setCopyLink(true);
+  };
 
   useEffect(() => {
     async function fetchRecipeData() {
@@ -21,8 +30,11 @@ function MealsInProgress() {
   }, [id]);
 
   useEffect(() => {
-    const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
-    setIsChecked(saveProgressLS[id] || []);
+    const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {
+      drinks: {},
+      meals: {},
+    };
+    setIsChecked(saveProgressLS.drinks[id] || []);
   }, [id]);
 
   if (!recipe) {
@@ -31,17 +43,24 @@ function MealsInProgress() {
 
   const onChange = ({ target }) => {
     const { checked } = target;
-    const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {};
-    saveProgressLS[id] = saveProgressLS[id]
-      ? [...saveProgressLS[id], target.name]
-      : [target.name];
+    const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {
+      drinks: {},
+      meals: {},
+    };
 
-    if (!checked) {
-      saveProgressLS[id] = saveProgressLS[id].filter((el) => el !== target.name);
+    if (!saveProgressLS.drinks[id]) {
+      saveProgressLS.drinks[id] = [];
+    }
+
+    if (checked) {
+      saveProgressLS.drinks[id].push(target.name);
+    } else {
+      saveProgressLS.drinks[id] = saveProgressLS.drinks[id]
+        .filter((item) => item !== target.name);
     }
 
     localStorage.setItem('inProgressRecipes', JSON.stringify(saveProgressLS));
-    setIsChecked(saveProgressLS[id]);
+    setIsChecked(saveProgressLS.drinks[id]);
   };
 
   const {
@@ -74,6 +93,7 @@ function MealsInProgress() {
         const isCheckedIngredient = isChecked.includes(ingredient);
         const textDecoration = isCheckedIngredient
           ? 'line-through solid rgb(0, 0, 0)' : '';
+        console.log(ingredient);
         return (
           <label
             key={ index }
@@ -104,16 +124,16 @@ function MealsInProgress() {
         Favorite
       </button>
 
-      <button
-        type="button"
-        data-testid="share-btn"
-      >
-        Share
-      </button>
+      <ShareButton
+        testId="share-btn"
+        handleClickShareBtn={ () => handleClickShareBtn() }
+      />
+      { copyLink && <p>Link copied!</p>}
 
       <button
         type="button"
         data-testid="finish-recipe-btn"
+        disabled={ isChecked.length !== Object.keys(ingredients).length }
         onClick={ () => history.push('/done-recipes') }
       >
         Finish Recipe
