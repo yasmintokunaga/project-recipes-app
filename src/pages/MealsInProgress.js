@@ -9,10 +9,10 @@ function MealsInProgress() {
   const history = useHistory();
   const { id } = useParams();
   const [recipe, setRecipe] = useState([]);
-  console.log(recipe);
   const [isChecked, setIsChecked] = useState({});
   const [copyLink, setCopyLink] = useState(false);
-
+  const [doneRecipesMock, setDoneRecipesMock] = useState([]);
+  const dateNow = new Date();
   const location = window.location.href;
   const share = location.replace(/(\/(?:meals|drinks)\/\d+)\/.*/, '$1');
 
@@ -20,6 +20,8 @@ function MealsInProgress() {
     copy(share);
     setCopyLink(true);
   };
+
+  const tags = recipe.strTags ? recipe.strTags.split(',') : [];
 
   useEffect(() => {
     const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {
@@ -45,6 +47,20 @@ function MealsInProgress() {
     return <p>Loading...</p>;
   }
 
+  const doneRecipes = [
+    {
+      id,
+      type: 'meal',
+      nationality: recipe.strArea ? recipe.strArea : '',
+      category: recipe.strCategory ? recipe.strCategory : '',
+      alcoholicOrNot: recipe.strAlcoholic ? recipe.strAlcoholic : '',
+      name: recipe.strMeal,
+      image: recipe.strMealThumb,
+      doneDate: dateNow.toISOString(),
+      tags,
+    },
+  ];
+
   const onChange = ({ target }) => {
     const { checked } = target;
     const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {
@@ -65,6 +81,15 @@ function MealsInProgress() {
 
     localStorage.setItem('inProgressRecipes', JSON.stringify(saveProgressLS));
     setIsChecked(saveProgressLS.meals[id]);
+  };
+
+  const handleClick = () => {
+    const recipesFromLocalStorage = JSON.parse(localStorage.getItem('doneRecipes'))
+      || doneRecipesMock;
+
+    setDoneRecipesMock(recipesFromLocalStorage);
+    history.push('/done-recipes');
+    localStorage.setItem('doneRecipes', JSON.stringify(doneRecipes));
   };
 
   const {
@@ -133,7 +158,7 @@ function MealsInProgress() {
         type="button"
         data-testid="finish-recipe-btn"
         disabled={ isChecked.length !== Object.keys(ingredients).length }
-        onClick={ () => history.push('/done-recipes') }
+        onClick={ () => handleClick() }
       >
         Finish Recipe
       </button>
