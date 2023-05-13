@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 function StartRecipeButton() {
+  const history = useHistory();
   const [InProgress, setInProgress] = useState(false);
   const [DoneRecipes, setDoneRecipes] = useState(false);
-  const idPath = window.location.pathname.split('/')[2];
-  const typePath = window.location.pathname.split('/')[1];
-  const history = useHistory();
+  const idPath = history.location.pathname.split('/')[2];
+  const typePath = history.location.pathname.split('/')[1];
 
   useEffect(() => {
     if (localStorage.getItem('inProgressRecipes')) {

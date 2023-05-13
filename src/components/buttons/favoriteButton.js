@@ -4,6 +4,7 @@ import blackHeartIcon from '../../images/blackHeartIcon.svg';
 import whiteHeartIcon from '../../images/whiteHeartIcon.svg';
 
 function FavoriteButton({ recipe }) {
+  // console.log(recipe);
   const [favorite, setFavorite] = useState(false);
 
   const iconPath = favorite ? blackHeartIcon : whiteHeartIcon;
@@ -43,7 +44,6 @@ function FavoriteButton({ recipe }) {
           image: recipe.strMealThumb,
         });
 
-    console.log(recipeData);
     if (isAlreadyFavorite) {
       const newFavoriteRecipes = favoriteRecipes
         .filter((favRecipe) => favRecipe.id !== idPath);
@@ -54,7 +54,6 @@ function FavoriteButton({ recipe }) {
     }
 
     setFavorite(!favorite);
-    console.log(favoriteRecipes);
   }
 
   return (
@@ -75,17 +74,7 @@ function FavoriteButton({ recipe }) {
 }
 
 FavoriteButton.propTypes = {
-  recipe: PropTypes.shape({
-    idMeal: PropTypes.string.isRequired,
-    strMeal: PropTypes.string,
-    strMealThumb: PropTypes.string.isRequired,
-    strDrink: PropTypes.string.isRequired,
-    strDrinkThumb: PropTypes.string.isRequired,
-    strCategory: PropTypes.string.isRequired,
-    strArea: PropTypes.string.isRequired,
-    strInstructions: PropTypes.string.isRequired,
-    strAlcoholic: PropTypes.string,
-  }).isRequired,
+  recipe: PropTypes.shape().isRequired,
 };
 
 export default FavoriteButton;

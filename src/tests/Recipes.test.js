@@ -37,7 +37,7 @@ describe('Verificando a funcionalidade da página Login', () => {
     expect(history.location.pathname).toBe('/meals');
     expect(await screen.findByRole('button', { name: /beef/i })).toBeInTheDocument();
     const btnsElements = screen.getAllByRole('button');
-    expect(btnsElements).toHaveLength(9);
+    expect(btnsElements).toHaveLength(10);
 
     userEvent.click(btnsElements[0]);
 
@@ -49,12 +49,12 @@ describe('Verificando a funcionalidade da página Login', () => {
     const textCorba = await screen.findByText(/corba/i);
     expect(textCorba).toBeInTheDocument();
 
-    userEvent.click(btnsElements[8]);
+    userEvent.click(btnsElements[9]);
 
     const textGg = await screen.findByText(/Gg/i);
     expect(textGg).toBeInTheDocument();
 
-    userEvent.click(btnsElements[7]);
+    userEvent.click(btnsElements[8]);
 
     const textG = await screen.findByText(/corba/i);
     expect(textG).toBeInTheDocument();

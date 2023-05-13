@@ -9,20 +9,19 @@ import FavoriteButton from '../components/buttons/favoriteButton';
 function DrinksInProcess() {
   const history = useHistory();
   const { id } = useParams();
-  const [recipe, setRecipe] = useState([]);
+  const [recipe, setRecipe] = useState({});
   const [isChecked, setIsChecked] = useState({});
   const [copyLink, setCopyLink] = useState(false);
   const [doneRecipesMock, setDoneRecipesMock] = useState([]);
   const dateNow = new Date();
   const location = window.location.href;
+  // console.log('linha 18', location);
   const share = location.replace(/(\/(?:meals|drinks)\/\d+)\/.*/, '$1');
 
   const handleClickShareBtn = () => {
     copy(share);
     setCopyLink(true);
   };
-
-  const tags = recipe.strTags ? recipe.strTags.split(',') : [];
 
   useEffect(() => {
     const saveProgressLS = JSON.parse(localStorage.getItem('inProgressRecipes')) || {
@@ -38,15 +37,16 @@ function DrinksInProcess() {
       const data = await response.json();
       const result = data.drinks[0];
       setRecipe(result);
-      console.log(result);
     }
 
     fetchRecipeData();
   }, [id]);
 
-  if (!recipe) {
-    return <p>Loading...</p>;
-  }
+  const tags = recipe.strTags ? recipe.strTags.split(',') : [];
+
+  // if (!recipe) {
+  //   return <p>Loading...</p>;
+  // }
 
   const doneRecipes = [
     {
@@ -98,7 +98,7 @@ function DrinksInProcess() {
     strDrinkThumb,
     strCategory,
     strInstructions,
-  } = recipe || {};
+  } = recipe;
 
   const ingredients = listOfIngredients(recipe);
 
