@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import copy from 'clipboard-copy';
 import shareBtn from '../images/shareIcon.svg';
 import Header from '../components/Header';
@@ -39,9 +39,13 @@ export default function FavoriteRecipes() {
     // setFavoriteRecipes(xablau);
   }, []);
 
+  useMemo(() => ({
+    favoriteRecipes,
+  }), [favoriteRecipes]);
+
   const handleFavoriteRemove = (id) => {
     const updatedRecipes = favoriteRecipes.filter((recipe) => recipe.id !== id);
-    setFavoriteRecipes(updatedRecipes);
+    setFavoriteRecipes([...updatedRecipes]);
     localStorage.setItem('favoriteRecipes', JSON.stringify(updatedRecipes));
   };
 

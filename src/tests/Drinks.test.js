@@ -36,9 +36,9 @@ describe('Verificando a funcionalidade da página Drinks', () => {
 
     expect(await screen.findByRole('button', { name: /beef/i })).toBeInTheDocument();
     const btnsElements = screen.getAllByRole('button');
-    expect(btnsElements).toHaveLength(9);
+    expect(btnsElements).toHaveLength(10);
 
-    userEvent.click(btnsElements[8]);
+    userEvent.click(btnsElements[9]);
 
     const btnOrdinaryDrink = await screen.findByRole('button', { name: /ordinary drink/i });
     expect(btnOrdinaryDrink).toBeInTheDocument();
@@ -49,7 +49,7 @@ describe('Verificando a funcionalidade da página Drinks', () => {
     expect(textGone).toBeInTheDocument();
 
     userEvent.click(btnsElements[5]);
-    userEvent.click(btnsElements[7]);
+    userEvent.click(btnsElements[8]);
 
     const textSushi = await screen.findByText(/kumpir/i);
     expect(textSushi).toBeInTheDocument();

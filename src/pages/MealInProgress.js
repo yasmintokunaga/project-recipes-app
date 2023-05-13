@@ -37,15 +37,15 @@ function MealInProgress() {
       const data = await response.json();
       const result = data.meals[0];
       setRecipe(result);
-      console.log(result);
+      // console.log(result);
     }
 
     fetchRecipeData();
   }, [id]);
 
-  if (!recipe) {
-    return <p>Loading...</p>;
-  }
+  // if (!recipe) {
+  //   return <p>Loading...</p>;
+  // }
 
   const doneRecipes = [
     {
@@ -97,7 +97,7 @@ function MealInProgress() {
     strMealThumb,
     strCategory,
     strInstructions,
-  } = recipe || {};
+  } = recipe;
 
   const ingredients = listOfIngredients(recipe);
 

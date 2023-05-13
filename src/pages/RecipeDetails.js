@@ -1,19 +1,18 @@
-import PropTypes from 'prop-types';
-import RecipesMealsOrDrinks from '../components/RecipesMealsOrDrinks';
-import ButtonsFilterCategories from '../components/ButtonsFilterCategories';
-import Footer from '../components/Footer';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import { useState } from 'react';
+import MealsDetails from './MealsDetails';
+import DrinksDetails from './DrinksDetails';
 
-function RecipeDetails({ history }) {
+function RecipeDetails() {
+  const history = useHistory();
+  const [type] = useState(history.location.pathname.split('/')[1]);
+  console.log('type', type);
   return (
     <main>
-      <ButtonsFilterCategories history={ history } />
-      <RecipesMealsOrDrinks history={ history } />
-      <Footer history={ history } />
+      { type === 'meals' && <MealsDetails /> }
+      { type === 'drinks' && <DrinksDetails /> }
     </main>
   );
 }
 
-RecipeDetails.propTypes = {
-  history: PropTypes.shape({}).isRequired,
-};
 export default RecipeDetails;
