@@ -50,6 +50,9 @@ describe('Verificando a funcionalidade da página Profile', () => {
     userEvent.click(linkGG);
     const loading = screen.getByText(/loading/i);
     expect(loading).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByTestId(FAVORITE_BTN)).toBeInTheDocument();
+    });
     const btnFavorite = await screen.findByTestId(FAVORITE_BTN);
     const btnShare = await screen.findByTestId('share-btn');
     expect(btnFavorite).toBeInTheDocument();

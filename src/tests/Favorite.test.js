@@ -10,11 +10,6 @@ import LoginProvider from '../context/LoginProvider';
 import RecipesProvider from '../context/RecipesProvider';
 import mockCypress from '../../cypress/mocks/fetch';
 
-const EMAIL_INPUT = 'email-input';
-const PASSWORD_INPUT = 'password-input';
-const LOGIN_SUBMIT_BTN = 'login-submit-btn';
-const DRINKS_BOTTOM_BTN = 'drinks-bottom-btn';
-const FAVORITE_BTN = 'favorite-btn';
 const array = [
   {
     alcoholicOrNot: 'Optional alcohol',
