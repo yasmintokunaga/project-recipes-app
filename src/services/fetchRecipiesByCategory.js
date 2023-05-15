@@ -14,6 +14,7 @@ export async function fetchRecepiesByCategoryDrinks(category) {
 // par é o que está efetivamente sendo filtrado, o parametro passado na barra de busca
 // pointer é uma checagem que tem relação com um dos endereços que usa filter em um ponto e todos os outros são search
 export async function fetchRecipeByType(type, par, pointer, consu) {
+  console.log(type, par, pointer, consu, 'oi');
   const api = consu === 'drinks' ? `https://www.thecocktaildb.com/api/json/v1/1/${pointer}.php?${type}=${par}` : `https://www.themealdb.com/api/json/v1/1/${pointer}.php?${type}=${par}`;
   const response = await fetch(api);
   const data = await response.json();
