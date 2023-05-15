@@ -45,7 +45,6 @@ function RecipesProvider({ children }) {
   }, [history, listRecipes, path]);
 
   const check = (arr) => {
-    console.log(arr);
     if (arr) {
       const finalNUmber = 12;
       return setListRecipes(arr.slice(0, finalNUmber));
