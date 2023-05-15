@@ -1,9 +1,7 @@
 import PropTypes from 'prop-types';
 import { createContext, useEffect, useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { fetchRecipesMeals, fetchRecipesDrinks } from '../services/fetchRecipes';
 import { fetchCategoriesDrinks, fetchCategoriesMeals } from '../services/fetchCategories';
-import { fetchRecipeByType } from '../services/fetchRecipiesByCategory';
 
 export const RecipesContext = createContext();
 
@@ -15,8 +13,6 @@ function RecipesProvider({ children }) {
   const [categoriesNames, setCategoriesNames] = useState([]);
   const [numberRecipes] = useState(MAX_NUMBER_RECIPES);
   const [numberCategories] = useState(MAX_NUMBER_CATEGORIES);
-
-  const history = useHistory();
 
   useEffect(() => {
     async function fetchData() {
@@ -35,58 +31,14 @@ function RecipesProvider({ children }) {
     fetchData();
   }, [numberCategories, numberRecipes, path]);
 
-  useEffect(() => {
-    if (listRecipes.length === 1) {
-      const id = path === '/meals'
-        ? `${path}/${listRecipes[0].idMeal}` : `${path}/${listRecipes[0].idDrink}`;
-
-      history.push(`${id}`);
-    }
-  }, [history, listRecipes, path]);
-
-  const check = (arr) => {
-    if (arr) {
-      const finalNUmber = 12;
-      return setListRecipes(arr.slice(0, finalNUmber));
-    }
-    global.alert('Sorry, we haven\'t found any recipes for these filters.');
-  };
-
-  const values = useMemo(() => {
-    async function handleClickExec(radio, parameter) {
-      if (radio === 'fl') {
-        if (parameter.length === 1) {
-          await fetchRecipeByType('f', parameter, 'search', path.slice(1)).then((ite) => {
-            check(ite);
-          });
-        } else {
-          global.alert('Your search must have only 1 (one) character');
-        }
-        return;
-      }
-      switch (radio) {
-      case 'ing':
-        await fetchRecipeByType('i', parameter, 'filter', path.slice(1)).then((item) => {
-          check(item);
-        });
-        break;
-      default:
-        await fetchRecipeByType('s', parameter, 'search', path.slice(1)).then((item) => {
-          check(item);
-        });
-        break;
-      }
-    }
-
-    return { listRecipes,
+  const values = useMemo(() => (
+    { listRecipes,
       setListRecipes,
       categoriesNames,
       numberRecipes,
       path,
       setPath,
-      handleClickExec,
-    };
-  }, [listRecipes, categoriesNames, numberRecipes, path]);
+    }), [listRecipes, categoriesNames, numberRecipes, path]);
 
   return (
     <RecipesContext.Provider value={ values }>
