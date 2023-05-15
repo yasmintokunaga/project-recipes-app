@@ -31,15 +31,14 @@ function RecipesProvider({ children }) {
     fetchData();
   }, [numberCategories, numberRecipes, path]);
 
-  const values = useMemo(() => {
-    return { listRecipes,
+  const values = useMemo(() => (
+    { listRecipes,
       setListRecipes,
       categoriesNames,
       numberRecipes,
       path,
       setPath,
-    };
-  }, [listRecipes, categoriesNames, numberRecipes, path]);
+    }), [listRecipes, categoriesNames, numberRecipes, path]);
 
   return (
     <RecipesContext.Provider value={ values }>
